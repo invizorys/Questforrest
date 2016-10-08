@@ -56,8 +56,8 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto vkAuthorize(UserDto userDto, String token) throws InvalidTokenException {
-        if (!isTokenValid(token, userDto.getLogin())) throw new InvalidTokenException();
+    public UserDto vkAuthorize(UserDto userDto, String token, String userId) throws InvalidTokenException {
+        if (!isTokenValid(token, userId)) throw new InvalidTokenException();
         User user = userRepository.findOneByLogin(userDto.getLogin());
         if (user == null) {
             user.setToken(UUID.randomUUID().toString().toUpperCase());
