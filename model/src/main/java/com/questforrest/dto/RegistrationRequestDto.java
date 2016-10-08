@@ -9,6 +9,7 @@ public class RegistrationRequestDto implements Serializable {
     private UserDto userDto;
     private String password;
     private String accessToken;
+    private String userId;
 
     public String getAccessToken() {
         return accessToken;
@@ -25,8 +26,6 @@ public class RegistrationRequestDto implements Serializable {
     public void setUserId(String userId) {
         this.userId = userId;
     }
-
-    private String userId;
 
     public UserDto getUserDto() {
         return userDto;
