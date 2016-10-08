@@ -22,6 +22,17 @@ public class Task {
     private String solution;
     @Column(name = "task_order_number")
     private int taskOrderNumber;
+    @ManyToOne
+    @JoinColumn(name = "task_quest_id")
+    private Quest quest;
+
+    public Quest getQuest() {
+        return quest;
+    }
+
+    public void setQuest(Quest quest) {
+        this.quest = quest;
+    }
 
     public Long getId() {
         return id;

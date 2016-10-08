@@ -1,7 +1,5 @@
 package com.questforrest.model;
 
-import javax.persistence.Enumerated;
-
 /**
  * Created by Ira Zyabkina on 08.10.2016.
  */

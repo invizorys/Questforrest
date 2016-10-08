@@ -1,26 +1,23 @@
 package com.questforrest.model;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Created by Ira Zyabkina on 08.10.2016.
  */
 @Entity
-@Table(name = "person")
-public class Person {
+@Table(name = "user")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "person_id")
+    @Column(name = "user_id")
     private Long id;
-    @Column(name = "person_name")
+    @Column(name = "user_name")
     private String name;
-    @Column(name = "person_surname")
+    @Column(name = "user_surname")
     private String surname;
-    @Column(name = "person_city")
+    @Column(name = "user_city")
     private String city;
-    @ManyToMany(mappedBy = "participants")
-    private List<Game> games;
 
     public Long getId() {
         return id;
@@ -52,13 +49,5 @@ public class Person {
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-    public List<Game> getGames() {
-        return games;
-    }
-
-    public void setGames(List<Game> games) {
-        this.games = games;
     }
 }

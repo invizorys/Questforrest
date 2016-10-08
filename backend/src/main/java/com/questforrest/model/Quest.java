@@ -19,14 +19,20 @@ public class Quest {
     private String description;
     @Column(name = "quest_rating")
     private double rating;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "feedback_id")
-    private List<Feedback> feedbacks;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "task_id")
+    @OneToMany(mappedBy = "quest")
     private List<Task> tasks;
     @Column(name = "quest_maxPlayers")
     private int maxPlayers;
+    @Column(name = "quest_picture")
+    private String pictureUrl;
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
 
     public Long getId() {
         return id;
@@ -50,14 +56,6 @@ public class Quest {
 
     public void setRating(double rating) {
         this.rating = rating;
-    }
-
-    public List<Feedback> getFeedbacks() {
-        return feedbacks;
-    }
-
-    public void setFeedbacks(List<Feedback> feedbacks) {
-        this.feedbacks = feedbacks;
     }
 
     public List<Task> getTasks() {

@@ -1,9 +1,7 @@
 package com.questforrest.dto;
 
-import com.questforrest.model.Feedback;
 import com.questforrest.model.Task;
 
-import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -14,7 +12,6 @@ public class QuestDto {
     private String name;
     private String description;
     private double rating;
-    private List<Feedback> feedbacks;
     private List<Task> tasks;
     private int maxPlayers;
 
@@ -40,14 +37,6 @@ public class QuestDto {
 
     public void setRating(double rating) {
         this.rating = rating;
-    }
-
-    public List<Feedback> getFeedbacks() {
-        return feedbacks;
-    }
-
-    public void setFeedbacks(List<Feedback> feedbacks) {
-        this.feedbacks = feedbacks;
     }
 
     public List<Task> getTasks() {
