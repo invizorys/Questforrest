@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,14 +41,20 @@ public class QuestService {
         List<UserShortInfoDto> users = quest.getParticipants().stream()
                 .map(participant -> modelMapper.map(participant.getUser(), UserShortInfoDto.class))
                 .collect(Collectors.toList());
-        return new QuestProgressResponseDto(tasks, users);
+        return new QuestProgressResponseDto(quest.getTeamName(), quest.getCode(), tasks, users);
     }
 
     @Transactional(readOnly = true)
-    public QuestListResponseDto getQuests() {
+    public QuestListResponseDto getQuests(String token) {
+        User user = userRepository.findUserByToken(token);
+        List<Quest> questsUserEnrolled = questRepository.findQuestsUserEnrolled(user.getId());
         List<Quest> quests = questRepository.findAll();
         List<QuestShortInfoDto> questShortInfoDtos = quests.stream()
-                .map(quest -> modelMapper.map(quest, QuestShortInfoDto.class))
+                .map(quest -> {
+                    QuestShortInfoDto questShortInfoDto = modelMapper.map(quest, QuestShortInfoDto.class);
+                    questShortInfoDto.setEnrolled(questsUserEnrolled.contains(quest));
+                    return questShortInfoDto;
+                })
                 .collect(Collectors.toList());
         return new QuestListResponseDto(questShortInfoDtos);
     }
@@ -59,20 +67,21 @@ public class QuestService {
     }
 
     @Transactional
-    public QuestEnrollResponseDto enroll(Long questId, String token, String questCode) {
+    public QuestProgressResponseDto enroll(Long questId, String token, String questCode) {
         QuestProgress questProgress = questProgressRepository.findQuestProgress(questId, questCode);
         persistParticipant(token, questProgress);
-        return generateEnrollResponse(questProgress);
+        return getQuest(questProgress.getId());
     }
 
     @Transactional
-    public QuestEnrollResponseDto createTeam(Long questId, String token, String teamName) {
+    public QuestProgressResponseDto createTeam(Long questId, String token, String teamName) {
         Quest questMetaData = questRepository.findOne(questId);
         QuestProgress questProgress = new QuestProgress();
         questProgress.setTeamName(teamName);
         questProgress.setQuest(questMetaData);
         questProgress.setStatus(QuestProgress.Status.NOT_STARTED);
         questProgress.setParticipants(new ArrayList<>());
+        questProgress.setCode(generateQuestCode());
         for (Task task : questMetaData.getTasks()) {
             TaskProgress taskProgress = new TaskProgress();
             taskProgress.setTask(task);
@@ -81,7 +90,7 @@ public class QuestService {
         }
         questProgressRepository.save(questProgress);
         persistParticipant(token, questProgress);
-        return generateEnrollResponse(questProgress);
+        return getQuest(questProgress.getId());
     }
 
     @Transactional
@@ -110,11 +119,8 @@ public class QuestService {
         questProgress.setStatus(newQuestStatus);
     }
 
-    private QuestEnrollResponseDto generateEnrollResponse(QuestProgress questProgress) {
-        List<UserShortInfoDto> participants = questProgress.getParticipants().stream()
-                .map(participant -> modelMapper.map(participant.getUser(), UserShortInfoDto.class))
-                .collect(Collectors.toList());
-        return new QuestEnrollResponseDto(questProgress.getId(), questProgress.getCode(), questProgress.getTeamName(), participants);
+    private String generateQuestCode() {
+        return new BigInteger(16, new SecureRandom()).toString();
     }
 
     private void persistParticipant(String token, QuestProgress questProgress) {
