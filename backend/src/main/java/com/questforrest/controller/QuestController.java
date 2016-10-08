@@ -3,6 +3,7 @@ package com.questforrest.controller;
 import com.questforrest.dto.CreateQuestRequestDto;
 import com.questforrest.service.QuestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,16 +25,18 @@ public class QuestController {
 
     @RequestMapping(value = "/progress/{questId}", method = RequestMethod.GET)
     public ResponseEntity getQuestProgress(@PathVariable Long questId, HttpRequest request) {
-        List<String> tokens = request.getHeaders().get("token");
-        return CollectionUtils.isEmpty(tokens) ?
+        String token = getToken(request);
+        return token == null ?
                 new ResponseEntity(HttpStatus.UNAUTHORIZED) :
-                new ResponseEntity<>(questService.getQuestProgress(questId, tokens.get(0)), HttpStatus.OK);
+                new ResponseEntity<>(questService.getQuestProgress(questId, token), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getQuests(HttpRequest request) {
-        List<String> tokens = request.getHeaders().get("token");
-        return new ResponseEntity<>(CollectionUtils.isEmpty(tokens) ? questService.getQuests() : questService.getQuests(tokens.get(0)), HttpStatus.OK);
+        String token = getToken(request);
+        return new ResponseEntity<>(token == null ?
+                questService.getQuests() :
+                questService.getQuests(token), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -44,26 +47,30 @@ public class QuestController {
 
     @RequestMapping(value = "/{questId}/enroll/{questCode}", method = RequestMethod.POST)
     public ResponseEntity enroll(@PathVariable Long questId, @PathVariable String questCode, HttpRequest request) {
-        List<String> tokens = request.getHeaders().get("token");
-        return CollectionUtils.isEmpty(tokens) ?
+        String token = getToken(request);
+        return token == null ?
                 new ResponseEntity(HttpStatus.UNAUTHORIZED) :
-                new ResponseEntity<>(questService.enroll(questId, tokens.get(0), questCode), HttpStatus.OK);
+                new ResponseEntity<>(questService.enroll(questId, token, questCode), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/resolve/{taskProgressId}", method = RequestMethod.POST)
     public ResponseEntity resolveTask(@PathVariable Long taskProgressId, @RequestBody String answer, HttpRequest request) {
-        List<String> tokens = request.getHeaders().get("token");
-        return CollectionUtils.isEmpty(tokens) ?
+        String token = getToken(request);
+        return token == null ?
                 new ResponseEntity(HttpStatus.UNAUTHORIZED) :
                 new ResponseEntity<>(questService.checkAnswer(taskProgressId, answer), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{questId}/team/{teamName}", method = RequestMethod.POST)
     public ResponseEntity createTeam(@PathVariable Long questId, @PathVariable String teamName, HttpRequest request) {
-        List<String> tokens = request.getHeaders().get("token");
-        return CollectionUtils.isEmpty(tokens) ?
+        String token = getToken(request);
+        return token == null ?
                 new ResponseEntity(HttpStatus.UNAUTHORIZED) :
-                new ResponseEntity<>(questService.createTeam(questId, tokens.get(0), teamName), HttpStatus.OK);
+                new ResponseEntity<>(questService.createTeam(questId, token, teamName), HttpStatus.OK);
     }
 
+    private String getToken(HttpRequest request) {
+        HttpHeaders headers = request.getHeaders();
+        return (headers == null || !headers.containsKey("token")) ? null : headers.get("token").get(0);
+    }
 }
