@@ -1,16 +1,13 @@
 package com.questforrest.service;
 
-import com.questforrest.dto.QuestDto;
 import com.questforrest.dto.TaskDto;
 import com.questforrest.model.Task;
-import com.questforrest.repository.QuestRepository;
 import com.questforrest.repository.TaskRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
