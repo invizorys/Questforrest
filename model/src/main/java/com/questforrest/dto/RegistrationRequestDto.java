@@ -8,6 +8,25 @@ import java.io.Serializable;
 public class RegistrationRequestDto implements Serializable {
     private UserDto userDto;
     private String password;
+    private String accessToken;
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    private String userId;
 
     public UserDto getUserDto() {
         return userDto;
