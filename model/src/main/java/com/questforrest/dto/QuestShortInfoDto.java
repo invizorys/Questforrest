@@ -10,6 +10,7 @@ public class QuestShortInfoDto implements Serializable {
     private String name;
     private String description;
     private String pictureUrl;
+    private boolean enrolled;
 
     public Long getId() {
         return id;
@@ -41,5 +42,13 @@ public class QuestShortInfoDto implements Serializable {
 
     public void setPictureUrl(String pictureUrl) {
         this.pictureUrl = pictureUrl;
+    }
+
+    public boolean isEnrolled() {
+        return enrolled;
+    }
+
+    public void setEnrolled(boolean enrolled) {
+        this.enrolled = enrolled;
     }
 }
