@@ -28,8 +28,11 @@ public class QuestController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public QuestListResponseDto getQuests() {
-        return questService.getQuests();
+    public ResponseEntity getQuests(HttpRequest request) {
+        List<String> tokens = request.getHeaders().get("token");
+        return tokens.isEmpty() ?
+                new ResponseEntity(HttpStatus.UNAUTHORIZED) :
+                new ResponseEntity<>(questService.getQuests(tokens.get(0)), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)
