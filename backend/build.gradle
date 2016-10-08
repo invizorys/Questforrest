@@ -1,27 +1,47 @@
-apply plugin: 'java'
-apply plugin: 'idea'
-
 buildscript {
     repositories {
         mavenCentral()
     }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE")
+    }
 }
 
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
 jar {
-    baseName = 'questforrest'
-    version = '0.0.1-SNAPSHOT'
+    baseName = 'gs-spring-boot'
+    version =  '0.1.0'
 }
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
 }
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 dependencies {
-    compile project(':model')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile('org.springframework.boot:spring-boot-starter-data-rest')
+//    compile('org.springframework.boot:spring-boot-starter-log4j2')
+//    compile("org.springframework.boot:spring-boarter-undertow")
+//    compile("org.springframework.boot:spring-boot-staot-strter-actuator")
+    compile("org.apache.tomcat.embed:tomcat-embed-jasper")
+    compile("org.modelmapper:modelmapper:0.7.5")
+    compile('org.springframework.integration:spring-integration-mail:4.2.4.RELEASE')
+    compile('javax.mail:mail:1.4.7')
+    compile('org.json:json')
+    compile('javax.servlet:jstl:1.2')
+    runtime('mysql:mysql-connector-java')
+    testCompile("com.h2database:h2")
+    testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.9'
+bootRun {
+    systemProperties['stand'] = System.getProperty('stand')
 }
