@@ -1,5 +1,7 @@
 package com.questforrest.model;
 
+import com.questforrest.dto.Type;
+
 import javax.persistence.*;
 
 /**
@@ -8,10 +10,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "task")
 public class Task {
-    public enum Type{
-        QR, LOCATION, TEXT;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id")
@@ -27,7 +25,7 @@ public class Task {
     @Column(name = "task_order_number")
     private int taskOrderNumber;
     @Column(name = "task_type")
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private Type type;
     @ManyToOne
     @JoinColumn(name = "task_quest_id")

@@ -1,7 +1,5 @@
 package com.questforrest.dto;
 
-import com.questforrest.model.Task.Type;
-
 /**
  * Created by root on 08.10.16.
  */
