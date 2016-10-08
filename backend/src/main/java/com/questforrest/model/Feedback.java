@@ -1,12 +1,23 @@
 package com.questforrest.model;
 
+import javax.persistence.*;
+
 /**
  * Created by Ira Zyabkina on 08.10.2016.
  */
+@Entity
+@Table(name = "feedback")
 public class Feedback {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "feedback_id")
     private Long id;
+    @ManyToOne
+    @JoinColumn(name = "person_id")
     private Person person;
+    @Column(name = "feedback_rating")
     private double rating;
+    @Column(name = "feedback_comment")
     private String comment;
 
     public Long getId() {
