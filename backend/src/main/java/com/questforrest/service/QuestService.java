@@ -109,7 +109,7 @@ public class QuestService {
     }
 
     private QuestProgressResponseDto getQuestProgressResponseDto(QuestProgress quest) {
-        List<TaskDto> tasks = quest.getTaskProgresses().stream()
+        List<TaskProgressDto> tasks = quest.getTaskProgresses().stream()
                 .map(this::parseTaskDto)
                 .collect(Collectors.toList());
         List<UserShortInfoDto> users = quest.getParticipants().stream()
@@ -141,8 +141,8 @@ public class QuestService {
         participantRepository.save(participant);
     }
 
-    private TaskDto parseTaskDto(TaskProgress taskProgress) {
-        TaskDto taskDto = modelMapper.map(taskProgress.getTask(), TaskDto.class);
+    private TaskProgressDto parseTaskDto(TaskProgress taskProgress) {
+        TaskProgressDto taskDto = modelMapper.map(taskProgress.getTask(), TaskProgressDto.class);
         taskDto.setSolved(taskProgress.isSolved());
         return taskDto;
     }

@@ -7,23 +7,23 @@ import java.util.List;
  * Created by root on 08.10.16.
  */
 public class QuestProgressResponseDto implements Serializable {
-    private List<TaskDto> taskProgresses;
+    private List<TaskProgressDto> taskProgresses;
     private List<UserShortInfoDto> participants;
     private String teamName;
     private String code;
 
-    public QuestProgressResponseDto(String teamName, String code, List<TaskDto> taskProgresses, List<UserShortInfoDto> participants) {
+    public QuestProgressResponseDto(String teamName, String code, List<TaskProgressDto> taskProgresses, List<UserShortInfoDto> participants) {
         this.taskProgresses = taskProgresses;
         this.participants = participants;
         this.teamName = teamName;
         this.code = code;
     }
 
-    public List<TaskDto> getTaskProgresses() {
+    public List<TaskProgressDto> getTaskProgresses() {
         return taskProgresses;
     }
 
-    public void setTaskProgresses(List<TaskDto> taskProgresses) {
+    public void setTaskProgresses(List<TaskProgressDto> taskProgresses) {
         this.taskProgresses = taskProgresses;
     }
 

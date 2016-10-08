@@ -1,8 +1,17 @@
 package com.questforrest.service;
 
+import com.questforrest.Application;
+import com.questforrest.dto.QuestMetadataResponseDto;
 import com.questforrest.model.Quest;
 import com.questforrest.model.Task;
+import com.questforrest.repository.QuestRepository;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -14,8 +23,16 @@ import static org.junit.Assert.*;
 /**
  * Created by Ira Zyabkina on 09.10.2016.
  */
-//@SpringRu
+@RunWith(SpringJUnit4ClassRunner.class)
+@TestPropertySource("classpath:test.app.properties")
+@SpringBootTest
 public class QuestServiceTest {
+
+    @Autowired
+    private QuestService questService;
+    @Autowired
+    private QuestRepository questRepository;
+
     private SecureRandom random = new SecureRandom();
 
     private String randomString() {
@@ -40,7 +57,16 @@ public class QuestServiceTest {
         task.setQuest(quest);
         quest.setTasks(Collections.singletonList(task));
 
+        questRepository.save(quest);
 
+        QuestMetadataResponseDto questMetadata = questService.getQuestMetadata(quest.getId());
+        assertNotNull(questMetadata);
+        assertEquals(questMetadata.getName(), quest.getName());
+        assertEquals(questMetadata.getDescription(), quest.getDescription());
+        assertEquals(questMetadata.getMaxPlayers(), quest.getMaxPlayers());
+        assertEquals(questMetadata.getPictureUrl(), quest.getPictureUrl());
+
+        questRepository.delete(quest);
     }
 
     @Test

@@ -1,10 +1,11 @@
 package com.questforrest.dto;
 
-/**
- * Created by Ira Zyabkina on 09.10.2016.
- */
+import java.io.Serializable;
 
-public class TaskDto{
+/**
+ * Created by root on 08.10.16.
+ */
+public class TaskProgressDto implements Serializable {
     public enum Type {
         QR, TEXT, LOCATION
     }
@@ -13,9 +14,8 @@ public class TaskDto{
     private String name;
     private String pictureUrl;
     private String description;
-    private String solution;
-    private int taskOrderNumber;
     private Type type;
+    private boolean solved;
 
     public Long getId() {
         return id;
@@ -49,27 +49,19 @@ public class TaskDto{
         this.description = description;
     }
 
-    public String getSolution() {
-        return solution;
-    }
-
-    public void setSolution(String solution) {
-        this.solution = solution;
-    }
-
-    public int getTaskOrderNumber() {
-        return taskOrderNumber;
-    }
-
-    public void setTaskOrderNumber(int taskOrderNumber) {
-        this.taskOrderNumber = taskOrderNumber;
-    }
-
     public Type getType() {
         return type;
     }
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public boolean isSolved() {
+        return solved;
+    }
+
+    public void setSolved(boolean solved) {
+        this.solved = solved;
     }
 }
