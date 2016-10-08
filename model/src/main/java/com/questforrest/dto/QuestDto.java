@@ -12,8 +12,9 @@ public class QuestDto {
     private String name;
     private String description;
     private double rating;
-    private List<Task> tasks;
+    private List<TaskDto> tasks;
     private int maxPlayers;
+    private String pictureUrl;
 
     public Long getId() {
         return id;
@@ -31,6 +32,14 @@ public class QuestDto {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public double getRating() {
         return rating;
     }
@@ -39,11 +48,11 @@ public class QuestDto {
         this.rating = rating;
     }
 
-    public List<Task> getTasks() {
+    public List<TaskDto> getTasks() {
         return tasks;
     }
 
-    public void setTasks(List<Task> tasks) {
+    public void setTasks(List<TaskDto> tasks) {
         this.tasks = tasks;
     }
 
@@ -55,11 +64,11 @@ public class QuestDto {
         this.maxPlayers = maxPlayers;
     }
 
-    public String getDescription() {
-        return description;
+    public String getPictureUrl() {
+        return pictureUrl;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
     }
 }
