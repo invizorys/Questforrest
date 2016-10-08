@@ -22,21 +22,6 @@ public class SignInPresenter {
     }
 
     public void getSomething() {
-        MediaHackClient client = ServiceGenerator.createService(MediaHackClient.class);
 
-        Call<List<Object>> call =
-                client.contributors("fs_opensource", "android-boilerplate");
-
-        call.enqueue(new Callback<List<Object>>() {
-            @Override
-            public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<List<Object>> call, Throwable t) {
-
-            }
-        });
     }
 }

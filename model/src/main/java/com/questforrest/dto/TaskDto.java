@@ -1,9 +1,11 @@
 package com.questforrest.dto;
 
+import java.io.Serializable;
+
 /**
  * Created by root on 08.10.16.
  */
-public class TaskDto {
+public class TaskDto implements Serializable {
     private Long id;
     private String name;
     private String pictureUrl;
@@ -11,6 +13,7 @@ public class TaskDto {
     private String solution;
     private int taskOrderNumber;
     private Type type;
+    private boolean isSolved;
 
     public Long getId() {
         return id;
@@ -66,5 +69,13 @@ public class TaskDto {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public boolean isSolved() {
+        return isSolved;
+    }
+
+    public void setSolved(boolean solved) {
+        isSolved = solved;
     }
 }

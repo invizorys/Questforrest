@@ -1,31 +1,31 @@
 package com.mediahack.ui.fragment;
 
-import android.content.Context;
-import android.net.Uri;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.mediahack.R;
+import com.mediahack.Util;
+import com.mediahack.ui.activity.QuestActivity;
+import com.questforrest.dto.TaskDto;
 
-public class FragmentLocationQuest extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
+public class FragmentLocationQuest extends Fragment implements View.OnClickListener {
+    private static final String TASK = "task";
+    private TaskDto task;
 
     public FragmentLocationQuest() {
         // Required empty public constructor
     }
 
-    public static FragmentLocationQuest newInstance(String param1, String param2) {
+    public static FragmentLocationQuest newInstance(TaskDto taskDto) {
         FragmentLocationQuest fragment = new FragmentLocationQuest();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(TASK, taskDto);
         fragment.setArguments(args);
         return fragment;
     }
@@ -34,15 +34,34 @@ public class FragmentLocationQuest extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            task = (TaskDto) getArguments().getSerializable(TASK);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_location_quest, container, false);
+        View view = inflater.inflate(R.layout.fragment_location_quest, container, false);
+        ((TextView) view.findViewById(R.id.text_view_description)).setText(task.getDescription());
+        view.findViewById(R.id.button_check_location).setOnClickListener(this);
+        return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_check_location:
+                AlertDialog.Builder builder = Util.getStandardDialog(getActivity(),
+                        getString(R.string.correct_solution_message));
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        task.setSolved(true);
+                        ((QuestActivity) getActivity()).showNextTask();
+                    }
+                });
+                builder.create().show();
+                break;
+        }
     }
 }

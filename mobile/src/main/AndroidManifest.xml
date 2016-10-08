@@ -31,6 +31,10 @@
         <activity
             android:name=".ui.activity.QRCodeActivity"
             android:label="@string/title_activity_qrcode"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activity.CompleteQuestActivity"
+            android:label="@string/title_activity_complete_quest"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

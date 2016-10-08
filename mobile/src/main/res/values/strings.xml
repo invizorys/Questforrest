@@ -3,9 +3,11 @@
     <string name="quests">Quests</string>
     <string name="check">Check</string>
     <string name="next">Next</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="scan_qr_code">Scan QR Code</string>
     <string name="title_activity_qrcode">QRCodeActivity</string>
+    <string name="correct_solution_message">Correct</string>
+    <string name="incorrect_solution_message">Failure</string>
+    <string name="ok">OK</string>
+    <string name="update">Update</string>
+    <string name="title_activity_complete_quest">CompleteQuestActivity</string>
 </resources>

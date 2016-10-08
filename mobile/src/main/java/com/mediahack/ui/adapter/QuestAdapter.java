@@ -9,9 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mediahack.R;
-import com.mediahack.model.Quest;
+import com.questforrest.dto.QuestDto;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,10 +21,14 @@ import java.util.List;
 
 public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.ViewHolder> {
     private Context context;
-    private List<Quest> quests;
+    private List<QuestDto> quests = new ArrayList<>();
     private AdapterListener listener;
 
-    public QuestAdapter(List<Quest> quests, AdapterListener listener) {
+    public QuestAdapter(AdapterListener listener) {
+        this.listener = listener;
+    }
+
+    public QuestAdapter(List<QuestDto> quests, AdapterListener listener) {
         this.quests = quests;
         this.listener = listener;
     }
@@ -37,9 +42,9 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(QuestAdapter.ViewHolder holder, int position) {
-        final Quest quest = quests.get(position);
-        Picasso.with(context).load(quest.getImageUrl()).into(holder.imageView);
-        holder.title.setText(quest.getTitle());
+        final QuestDto quest = quests.get(position);
+        Picasso.with(context).load(quest.getPictureUrl()).into(holder.imageView);
+        holder.title.setText(quest.getName());
         holder.description.setText(quest.getDescription());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -55,11 +60,16 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.ViewHolder> 
         return quests.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView imageView;
-        public TextView title, description;
+    public void setQuests(List<QuestDto> quests) {
+        this.quests = quests;
+        notifyDataSetChanged();
+    }
 
-        public ViewHolder(View view) {
+    class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView imageView;
+        TextView title, description;
+
+        ViewHolder(View view) {
             super(view);
             imageView = (ImageView) view.findViewById(R.id.image_view);
             title = (TextView) view.findViewById(R.id.text_view_title);
@@ -68,6 +78,6 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.ViewHolder> 
     }
 
     public interface AdapterListener {
-        void onItemClicked(Quest quest);
+        void onItemClicked(QuestDto quest);
     }
 }

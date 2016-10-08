@@ -1,11 +1,12 @@
 package com.questforrest.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by root on 08.10.16.
  */
-public class QuestDto {
+public class QuestDto implements Serializable {
     private Long id;
     private String name;
     private String description;

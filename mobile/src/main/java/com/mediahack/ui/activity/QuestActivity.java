@@ -9,15 +9,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.mediahack.R;
-import com.mediahack.model.Quest;
 import com.mediahack.ui.adapter.QuestPagerAdapter;
+import com.questforrest.dto.QuestDto;
+import com.questforrest.dto.TaskDto;
 import com.viewpagerindicator.CirclePageIndicator;
+
+import java.util.List;
 
 public class QuestActivity extends AppCompatActivity implements View.OnClickListener {
     private final static String QUEST = "quest";
     private ViewPager pager;
+    private List<TaskDto> tasks;
 
-    public static void startActivity(Context context, Quest quest) {
+    public static void startActivity(Context context, QuestDto quest) {
         Intent intent = new Intent(context, QuestActivity.class);
         intent.putExtra(QUEST, quest);
         context.startActivity(intent);
@@ -28,34 +32,18 @@ public class QuestActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quest);
 
-        Quest quest = (Quest) getIntent().getSerializableExtra(QUEST);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle(quest.getTitle());
+        QuestDto quest = (QuestDto) getIntent().getSerializableExtra(QUEST);
+        tasks = quest.getTasks();
+        getSupportActionBar().setTitle(quest.getName());
 
         findViewById(R.id.button_next).setOnClickListener(this);
 
         pager = (ViewPager) findViewById(R.id.pager);
-        QuestPagerAdapter pagerAdapter = new QuestPagerAdapter(getSupportFragmentManager());
+        QuestPagerAdapter pagerAdapter = new QuestPagerAdapter(getSupportFragmentManager(), tasks);
         pager.setAdapter(pagerAdapter);
-
-        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            @Override
-            public void onPageSelected(int position) {
-//                Log.d(TAG, "onPageSelected, position = " + position);
-            }
-
-            @Override
-            public void onPageScrolled(int position, float positionOffset,
-                                       int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
 
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -78,8 +66,12 @@ public class QuestActivity extends AppCompatActivity implements View.OnClickList
         pageIndicator.setViewPager(pager);
     }
 
-    private void initDots() {
-
+    public void showNextTask() {
+        if (isAllTaskSolved()) {
+            CompleteQuestActivity.startActivity(this);
+        } else {
+            pager.setCurrentItem(pager.getCurrentItem() + 1);
+        }
     }
 
     @Override
@@ -89,5 +81,14 @@ public class QuestActivity extends AppCompatActivity implements View.OnClickList
                 pager.setCurrentItem(pager.getCurrentItem() + 1);
                 break;
         }
+    }
+
+    private boolean isAllTaskSolved() {
+        for (TaskDto task : tasks) {
+            if (!task.isSolved()) {
+                return false;
+            }
+        }
+        return true;
     }
 }
