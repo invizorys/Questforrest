@@ -6,13 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Created by root on 08.10.16.
- */
 @RestController
 @RequestMapping("/quest")
 public class QuestController {
@@ -27,7 +25,7 @@ public class QuestController {
     @RequestMapping(value = "/progress/{questId}", method = RequestMethod.GET)
     public ResponseEntity getQuestProgress(@PathVariable Long questId, HttpRequest request) {
         List<String> tokens = request.getHeaders().get("token");
-        return tokens.isEmpty() ?
+        return CollectionUtils.isEmpty(tokens) ?
                 new ResponseEntity(HttpStatus.UNAUTHORIZED) :
                 new ResponseEntity<>(questService.getQuestProgress(questId, tokens.get(0)), HttpStatus.OK);
     }
@@ -35,9 +33,7 @@ public class QuestController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getQuests(HttpRequest request) {
         List<String> tokens = request.getHeaders().get("token");
-        return tokens.isEmpty() ?
-                new ResponseEntity(HttpStatus.UNAUTHORIZED) :
-                new ResponseEntity<>(questService.getQuests(tokens.get(0)), HttpStatus.OK);
+        return new ResponseEntity<>(CollectionUtils.isEmpty(tokens) ? questService.getQuests() : questService.getQuests(tokens.get(0)), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -49,7 +45,7 @@ public class QuestController {
     @RequestMapping(value = "/{questId}/enroll/{questCode}", method = RequestMethod.POST)
     public ResponseEntity enroll(@PathVariable Long questId, @PathVariable String questCode, HttpRequest request) {
         List<String> tokens = request.getHeaders().get("token");
-        return tokens.isEmpty() ?
+        return CollectionUtils.isEmpty(tokens) ?
                 new ResponseEntity(HttpStatus.UNAUTHORIZED) :
                 new ResponseEntity<>(questService.enroll(questId, tokens.get(0), questCode), HttpStatus.OK);
     }
@@ -57,7 +53,7 @@ public class QuestController {
     @RequestMapping(value = "/resolve/{taskProgressId}", method = RequestMethod.POST)
     public ResponseEntity resolveTask(@PathVariable Long taskProgressId, @RequestBody String answer, HttpRequest request) {
         List<String> tokens = request.getHeaders().get("token");
-        return tokens.isEmpty() ?
+        return CollectionUtils.isEmpty(tokens) ?
                 new ResponseEntity(HttpStatus.UNAUTHORIZED) :
                 new ResponseEntity<>(questService.checkAnswer(taskProgressId, answer), HttpStatus.OK);
     }
@@ -65,7 +61,7 @@ public class QuestController {
     @RequestMapping(value = "/{questId}/team/{teamName}", method = RequestMethod.POST)
     public ResponseEntity createTeam(@PathVariable Long questId, @PathVariable String teamName, HttpRequest request) {
         List<String> tokens = request.getHeaders().get("token");
-        return tokens.isEmpty() ?
+        return CollectionUtils.isEmpty(tokens) ?
                 new ResponseEntity(HttpStatus.UNAUTHORIZED) :
                 new ResponseEntity<>(questService.createTeam(questId, tokens.get(0), teamName), HttpStatus.OK);
     }

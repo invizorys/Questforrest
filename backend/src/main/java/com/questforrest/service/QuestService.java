@@ -59,6 +59,17 @@ public class QuestService {
         return new QuestListResponseDto(questShortInfoDtos);
     }
 
+
+    @Transactional(readOnly = true)
+    public QuestListResponseDto getQuests() {
+        List<Quest> quests = questRepository.findAll();
+        List<QuestShortInfoDto> questShortInfoDtos = quests.stream()
+                .map(quest ->  modelMapper.map(quest, QuestShortInfoDto.class))
+                .collect(Collectors.toList());
+        return new QuestListResponseDto(questShortInfoDtos);
+    }
+
+
     @Transactional
     public void addQuest(CreateQuestRequestDto questDto) {
         Quest quest = modelMapper.map(questDto, Quest.class);
