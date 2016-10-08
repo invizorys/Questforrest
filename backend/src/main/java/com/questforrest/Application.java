@@ -1,6 +1,7 @@
 package com.questforrest;
 
 import com.questforrest.config.DataConfig;
+import com.questforrest.config.UtilConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,7 +14,7 @@ import org.springframework.context.annotation.PropertySource;
 @SpringBootApplication
 @ComponentScan
 @PropertySource("classpath:application.properties")
-@Import({DataConfig.class})
+@Import({DataConfig.class, UtilConfig.class})
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

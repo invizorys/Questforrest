@@ -23,7 +23,7 @@ import java.util.Properties;
  */
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories("com.bobbbaich.repository")
+@EnableJpaRepositories("com.questforrest.repository")
 public class DataConfig {
     private static final String STAND_SYSTEM_PROPERTY_NAME = "stand";
     private static final String DEV_PROPERTIES_PATH_TEMPLATE = "/dev/{stand}.properties";
@@ -46,7 +46,6 @@ public class DataConfig {
         entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
         entityManagerFactoryBean.setPackagesToScan(env.getRequiredProperty(PROP_ENTITY_MANAGER_PACKAGES_TO_SCAN));
         entityManagerFactoryBean.setJpaProperties(getHibernateProperties());
-        System.out.println("entityManagerFactory()");
         return entityManagerFactoryBean;
     }
 
@@ -54,7 +53,6 @@ public class DataConfig {
     public JpaTransactionManager transactionManager(){
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
-        System.out.println("transactionManager()");
         return transactionManager;
     }
 
@@ -76,7 +74,6 @@ public class DataConfig {
             System.out.println(e.getMessage());
         }
 
-        System.out.println("dataSource()");
         return dataSource;
     }
 
@@ -84,17 +81,14 @@ public class DataConfig {
         dataSource.setUrl(url);
         dataSource.setUsername(username);
         dataSource.setPassword(password);
-        System.out.println("setDbProperties()");
         return dataSource;
     }
 
     private Properties getHibernateProperties() {
-        System.out.println("getHibernateProperties()");
         Properties properties = new Properties();
         properties.put(PROP_HIBERNATE_DIALECT, env.getRequiredProperty(PROP_HIBERNATE_DIALECT));
         properties.put(PROP_HIBERNATE_SHOW_SQL, env.getRequiredProperty(PROP_HIBERNATE_SHOW_SQL));
         properties.put(PROP_HIBERNATE_HBM2DDL_AUTO, env.getRequiredProperty(PROP_HIBERNATE_HBM2DDL_AUTO));
-        System.out.println("getHibernateProperties()");
         return properties;
     }
 }

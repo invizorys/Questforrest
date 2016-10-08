@@ -1,31 +1,21 @@
-package com.questforrest.model;
+package com.questforrest.dto;
+
+import com.questforrest.model.Feedback;
+import com.questforrest.model.Task;
 
 import javax.persistence.*;
 import java.util.List;
 
 /**
- * Created by Ira Zyabkina on 08.10.2016.
+ * Created by root on 08.10.16.
  */
-@Entity
-@Table(name = "quest")
-public class Quest {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "quest_id")
+public class QuestDto {
     private Long id;
-    @Column(name = "quest_name")
     private String name;
-    @Column(name = "quest_description")
     private String description;
-    @Column(name = "quest_rating")
     private double rating;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "feedback_id")
     private List<Feedback> feedbacks;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "task_id")
     private List<Task> tasks;
-    @Column(name = "quest_maxPlayers")
     private int maxPlayers;
 
     public Long getId() {
