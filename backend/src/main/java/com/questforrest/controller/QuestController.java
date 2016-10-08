@@ -19,7 +19,7 @@ public class QuestController {
     @Autowired
     private QuestService questService;
 
-    @RequestMapping(value = "/progress/{questId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{questId}", method = RequestMethod.GET)
     public ResponseEntity getQuest(@PathVariable Long questId) {
         return new ResponseEntity<>(questService.getQuestMetadata(questId), HttpStatus.OK);
     }
