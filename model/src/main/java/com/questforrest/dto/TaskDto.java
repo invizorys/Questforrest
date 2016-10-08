@@ -1,6 +1,6 @@
 package com.questforrest.dto;
 
-import com.questforrest.model.Quest;
+import com.questforrest.model.Task.Type;
 
 /**
  * Created by root on 08.10.16.
@@ -12,6 +12,7 @@ public class TaskDto {
     private String description;
     private String solution;
     private int taskOrderNumber;
+    private Type type;
 
     public Long getId() {
         return id;
@@ -59,5 +60,13 @@ public class TaskDto {
 
     public void setTaskOrderNumber(int taskOrderNumber) {
         this.taskOrderNumber = taskOrderNumber;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 }

@@ -8,6 +8,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "task")
 public class Task {
+    public enum Type{
+        QR, LOCATION, TEXT;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id")
@@ -22,6 +26,9 @@ public class Task {
     private String solution;
     @Column(name = "task_order_number")
     private int taskOrderNumber;
+    @Column(name = "task_type")
+    @Enumerated
+    private Type type;
     @ManyToOne
     @JoinColumn(name = "task_quest_id")
     private Quest quest;
@@ -80,5 +87,13 @@ public class Task {
 
     public void setTaskOrderNumber(int taskOrderNumber) {
         this.taskOrderNumber = taskOrderNumber;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 }
