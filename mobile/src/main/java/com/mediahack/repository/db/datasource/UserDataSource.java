@@ -1,5 +1,4 @@
 package com.mediahack.repository.db.datasource;
-
 import android.content.Context;
 
 import com.mediahack.repository.db.model.RealmUser;

@@ -1,6 +1,6 @@
 package com.mediahack.presentation.presenter;
 
-import com.mediahack.presentation.view.MainView;
+import com.mediahack.presentation.view.SignInView;
 import com.mediahack.repository.rest.MediaHackClient;
 import com.mediahack.repository.rest.ServiceGenerator;
 
@@ -14,10 +14,10 @@ import retrofit2.Response;
  * Created by Roma on 05.10.2016.
  */
 
-public class MainPresenter {
-    private MainView view;
+public class SignInPresenter {
+    private SignInView view;
 
-    public MainPresenter(MainView view) {
+    public SignInPresenter(SignInView view) {
         this.view = view;
     }
 
