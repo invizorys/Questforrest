@@ -1,7 +1,5 @@
 package com.questforrest.dto;
 
-import javax.persistence.Column;
-
 /**
  * Created by root on 08.10.16.
  */
