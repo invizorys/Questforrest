@@ -92,6 +92,7 @@ public class QuestService {
         questProgress.setQuest(questMetaData);
         questProgress.setStatus(QuestProgress.Status.NOT_STARTED);
         questProgress.setParticipants(new ArrayList<>());
+        questProgress.setTaskProgresses(new ArrayList<>());
         questProgress.setCode(generateQuestCode());
         for (Task task : questMetaData.getTasks()) {
             TaskProgress taskProgress = new TaskProgress();
