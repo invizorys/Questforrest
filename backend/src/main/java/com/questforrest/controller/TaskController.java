@@ -23,12 +23,12 @@ public class TaskController {
     private TaskService taskService;
 
     @RequestMapping(value = "/{questId}", method = RequestMethod.GET)
-    public TaskDto getQuest(@PathVariable Long questId){
+    public TaskDto getTask(@PathVariable Long questId){
         return taskService.getTest(questId);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<TaskDto> getQuests(){
+    public List<TaskDto> getTask(){
         return taskService.getTasks();
     }
 }
