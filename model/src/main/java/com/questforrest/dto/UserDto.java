@@ -1,30 +1,15 @@
-package com.questforrest.model;
-
-import javax.persistence.*;
+package com.questforrest.dto;
 
 /**
- * Created by Ira Zyabkina on 08.10.2016.
+ * Created by root on 08.10.16.
  */
-@Entity
-@Table(name = "user")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+public class UserDto {
     private Long id;
-    @Column(name = "user_name")
     private String name;
-    @Column(name = "user_surname")
     private String surname;
-    @Column(name = "user_city")
     private String city;
-    @Column(name = "user_password")
-    private String password;
-    @Column(name = "user_login")
     private String login;
-    @Column(name = "user_session_token")
     private String token;
-    @Column(name = "user_avatar_url")
     private String avatarUrl;
 
     public Long getId() {
@@ -57,14 +42,6 @@ public class User {
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getLogin() {

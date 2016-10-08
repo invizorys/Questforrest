@@ -1,11 +1,8 @@
 package com.questforrest.controller;
 
-import com.questforrest.dto.QuestDto;
 import com.questforrest.dto.TaskDto;
-import com.questforrest.model.Task;
 import com.questforrest.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +14,7 @@ import java.util.List;
  * Created by root on 08.10.16.
  */
 @RestController
-@RequestMapping("task")
+@RequestMapping("/task")
 public class TaskController {
     @Autowired
     private TaskService taskService;
