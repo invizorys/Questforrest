@@ -1,9 +1,6 @@
 package com.questforrest.controller;
 
-import com.questforrest.dto.AnswerResponseDto;
 import com.questforrest.dto.CreateQuestRequestDto;
-import com.questforrest.dto.QuestProgressResponseDto;
-import com.questforrest.dto.QuestListResponseDto;
 import com.questforrest.service.QuestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -22,9 +19,17 @@ public class QuestController {
     @Autowired
     private QuestService questService;
 
-    @RequestMapping(value = "/{questId}", method = RequestMethod.GET)
-    public QuestProgressResponseDto getQuest(@PathVariable Long questId) {
-        return questService.getQuest(questId);
+    @RequestMapping(value = "/progress/{questId}", method = RequestMethod.GET)
+    public ResponseEntity getQuest(@PathVariable Long questId) {
+        return new ResponseEntity<>(questService.getQuestMetadata(questId), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/progress/{questId}", method = RequestMethod.GET)
+    public ResponseEntity getQuestProgress(@PathVariable Long questId, HttpRequest request) {
+        List<String> tokens = request.getHeaders().get("token");
+        return tokens.isEmpty() ?
+                new ResponseEntity(HttpStatus.UNAUTHORIZED) :
+                new ResponseEntity<>(questService.getQuestProgress(questId, tokens.get(0)), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET)

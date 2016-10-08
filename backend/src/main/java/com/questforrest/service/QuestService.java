@@ -33,15 +33,15 @@ public class QuestService {
     private TaskProgressRepository taskProgressRepository;
 
     @Transactional(readOnly = true)
-    public QuestProgressResponseDto getQuest(Long questId) {
-        QuestProgress quest = questProgressRepository.getOne(questId);
-        List<TaskDto> tasks = quest.getTaskProgresses().stream()
-                .map(this::parseTaskDto)
-                .collect(Collectors.toList());
-        List<UserShortInfoDto> users = quest.getParticipants().stream()
-                .map(participant -> modelMapper.map(participant.getUser(), UserShortInfoDto.class))
-                .collect(Collectors.toList());
-        return new QuestProgressResponseDto(quest.getTeamName(), quest.getCode(), tasks, users);
+    public QuestMetadataResponseDto getQuestMetadata(Long questId) {
+        Quest quest = questRepository.findOne(questId);
+        return modelMapper.map(quest, QuestMetadataResponseDto.class);
+    }
+
+    @Transactional(readOnly = true)
+    public QuestProgressResponseDto getQuestProgress(Long questId, String token) {
+        QuestProgress quest = questProgressRepository.findQuestProgressByQuestIdAndUserToken(questId, token);
+        return getQuestProgressResponseDto(quest);
     }
 
     @Transactional(readOnly = true)
@@ -70,7 +70,7 @@ public class QuestService {
     public QuestProgressResponseDto enroll(Long questId, String token, String questCode) {
         QuestProgress questProgress = questProgressRepository.findQuestProgress(questId, questCode);
         persistParticipant(token, questProgress);
-        return getQuest(questProgress.getId());
+        return getQuestProgressResponseDto(questProgress);
     }
 
     @Transactional
@@ -90,7 +90,7 @@ public class QuestService {
         }
         questProgressRepository.save(questProgress);
         persistParticipant(token, questProgress);
-        return getQuest(questProgress.getId());
+        return getQuestProgressResponseDto(questProgress);
     }
 
     @Transactional
@@ -103,9 +103,19 @@ public class QuestService {
             checkQuestIsFinished(questProgress);
         }
         AnswerResponseDto answerResponseDto = new AnswerResponseDto();
-        answerResponseDto.setQuestProgressResponseDto(getQuest(questProgress.getId()));
+        answerResponseDto.setQuestProgressResponseDto(getQuestProgressResponseDto(questProgress));
         answerResponseDto.setRightAnswer(rightAnswer);
         return answerResponseDto;
+    }
+
+    private QuestProgressResponseDto getQuestProgressResponseDto(QuestProgress quest) {
+        List<TaskDto> tasks = quest.getTaskProgresses().stream()
+                .map(this::parseTaskDto)
+                .collect(Collectors.toList());
+        List<UserShortInfoDto> users = quest.getParticipants().stream()
+                .map(participant -> modelMapper.map(participant.getUser(), UserShortInfoDto.class))
+                .collect(Collectors.toList());
+        return new QuestProgressResponseDto(quest.getTeamName(), quest.getCode(), tasks, users);
     }
 
     private void checkQuestIsFinished(QuestProgress questProgress) {
