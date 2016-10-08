@@ -1,9 +1,11 @@
 package com.questforrest.dto;
 
+import java.io.Serializable;
+
 /**
  * Created by root on 08.10.16.
  */
-public class UserDto {
+public class UserDto implements Serializable{
     private Long id;
     private String name;
     private String surname;

@@ -6,14 +6,16 @@ import java.io.Serializable;
  * Created by root on 08.10.16.
  */
 public class TaskDto implements Serializable {
+    public enum Type {
+        QR, TEXT, LOCATION
+    }
+
     private Long id;
     private String name;
     private String pictureUrl;
     private String description;
-    private String solution;
-    private int taskOrderNumber;
     private Type type;
-    private boolean isSolved;
+    private boolean solved;
 
     public Long getId() {
         return id;
@@ -47,22 +49,6 @@ public class TaskDto implements Serializable {
         this.description = description;
     }
 
-    public String getSolution() {
-        return solution;
-    }
-
-    public void setSolution(String solution) {
-        this.solution = solution;
-    }
-
-    public int getTaskOrderNumber() {
-        return taskOrderNumber;
-    }
-
-    public void setTaskOrderNumber(int taskOrderNumber) {
-        this.taskOrderNumber = taskOrderNumber;
-    }
-
     public Type getType() {
         return type;
     }
@@ -72,10 +58,10 @@ public class TaskDto implements Serializable {
     }
 
     public boolean isSolved() {
-        return isSolved;
+        return solved;
     }
 
     public void setSolved(boolean solved) {
-        isSolved = solved;
+        this.solved = solved;
     }
 }

@@ -1,12 +1,11 @@
 package com.questforrest.repository;
 
-import com.questforrest.model.User;
+import com.questforrest.model.TaskProgress;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * Created by Ira Zyabkina on 08.10.2016.
  */
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface TaskProgressRepository extends JpaRepository<TaskProgress, Long> {
 
-    User findUserByToken(String token);
 }

@@ -12,11 +12,15 @@ import java.util.List;
 @Entity
 @Table(name = "quest_progress")
 public class QuestProgress {
+    public enum Status{
+        NOT_STARTED, IN_PROGRESS, FINISHED
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "quest_progress_id")
     private Long id;
-    @OneToMany(mappedBy = "questProgress")
+    @OneToMany(mappedBy = "questProgress", cascade = CascadeType.ALL)
     private List<TaskProgress> taskProgresses;
     @OneToMany(mappedBy = "questProgress")
     private List<Participant> participants;
@@ -32,6 +36,10 @@ public class QuestProgress {
     @DateTimeFormat
     @Column(name = "quest_progress_end_date")
     private Date endDate;
+    @Column(name = "quest_progress_team_name")
+    private String teamName;
+    @Column(name = "quest_progress_code")
+    private String code;
 
     public Long getId() {
         return id;
@@ -87,5 +95,21 @@ public class QuestProgress {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

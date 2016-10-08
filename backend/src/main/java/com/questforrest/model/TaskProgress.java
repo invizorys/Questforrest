@@ -12,9 +12,8 @@ public class TaskProgress {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_progress_id")
     private Long id;
-    @Enumerated
-    @Column(name = "tast_progress_status")
-    private Status status;
+    @Column(name = "task_progress_status")
+    private boolean solved;
     @ManyToOne
     @JoinColumn(name = "task_progress_task_id")
     private Task task;
@@ -30,12 +29,12 @@ public class TaskProgress {
         this.id = id;
     }
 
-    public Status getStatus() {
-        return status;
+    public boolean isSolved() {
+        return solved;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setSolved(boolean solved) {
+        this.solved = solved;
     }
 
     public Task getTask() {
@@ -44,5 +43,13 @@ public class TaskProgress {
 
     public void setTask(Task task) {
         this.task = task;
+    }
+
+    public QuestProgress getQuestProgress() {
+        return questProgress;
+    }
+
+    public void setQuestProgress(QuestProgress questProgress) {
+        this.questProgress = questProgress;
     }
 }

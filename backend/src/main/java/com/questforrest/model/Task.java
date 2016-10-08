@@ -1,8 +1,5 @@
 package com.questforrest.model;
 
-
-import com.questforrest.dto.Type;
-
 import javax.persistence.*;
 
 /**
@@ -11,6 +8,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "task")
 public class Task {
+    public enum Type {
+        QR, TEXT, LOCATION
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id")

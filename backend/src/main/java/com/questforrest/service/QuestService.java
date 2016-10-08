@@ -1,14 +1,14 @@
 package com.questforrest.service;
 
-import com.questforrest.dto.QuestDto;
-import com.questforrest.model.Quest;
-import com.questforrest.model.Task;
-import com.questforrest.repository.QuestRepository;
+import com.questforrest.dto.*;
+import com.questforrest.model.*;
+import com.questforrest.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,29 +22,112 @@ public class QuestService {
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
-    private TaskService taskService;
+    private QuestProgressRepository questProgressRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private ParticipantRepository participantRepository;
+    @Autowired
+    private TaskProgressRepository taskProgressRepository;
 
-
-    @Transactional
-    public QuestDto getQuest(Long questId) {
-        Quest quest = questRepository.getOne(questId);
-        return modelMapper.map(quest, QuestDto.class);
-    }
-
-    @Transactional
-    public List<QuestDto> getQuests() {
-        List<Quest> quests = questRepository.findAll();
-        return quests.stream()
-                .map(quest -> modelMapper.map(quest, QuestDto.class))
+    @Transactional(readOnly = true)
+    public QuestProgressResponseDto getQuest(Long questId) {
+        QuestProgress quest = questProgressRepository.getOne(questId);
+        List<TaskDto> tasks = quest.getTaskProgresses().stream()
+                .map(this::parseTaskDto)
                 .collect(Collectors.toList());
+        List<UserShortInfoDto> users = quest.getParticipants().stream()
+                .map(participant -> modelMapper.map(participant.getUser(), UserShortInfoDto.class))
+                .collect(Collectors.toList());
+        return new QuestProgressResponseDto(tasks, users);
+    }
+
+    @Transactional(readOnly = true)
+    public QuestListResponseDto getQuests() {
+        List<Quest> quests = questRepository.findAll();
+        List<QuestShortInfoDto> questShortInfoDtos = quests.stream()
+                .map(quest -> modelMapper.map(quest, QuestShortInfoDto.class))
+                .collect(Collectors.toList());
+        return new QuestListResponseDto(questShortInfoDtos);
     }
 
     @Transactional
-    public void addQuest(QuestDto questDto) {
+    public void addQuest(CreateQuestRequestDto questDto) {
         Quest quest = modelMapper.map(questDto, Quest.class);
-        for (Task task : quest.getTasks()) {
-            task.setQuest(quest);
-        }
+        quest.getTasks().forEach(task -> task.setQuest(quest));
         questRepository.save(quest);
+    }
+
+    @Transactional
+    public QuestEnrollResponseDto enroll(Long questId, String token, String questCode) {
+        QuestProgress questProgress = questProgressRepository.findQuestProgress(questId, questCode);
+        persistParticipant(token, questProgress);
+        return generateEnrollResponse(questProgress);
+    }
+
+    @Transactional
+    public QuestEnrollResponseDto createTeam(Long questId, String token, String teamName) {
+        Quest questMetaData = questRepository.findOne(questId);
+        QuestProgress questProgress = new QuestProgress();
+        questProgress.setTeamName(teamName);
+        questProgress.setQuest(questMetaData);
+        questProgress.setStatus(QuestProgress.Status.NOT_STARTED);
+        questProgress.setParticipants(new ArrayList<>());
+        for (Task task : questMetaData.getTasks()) {
+            TaskProgress taskProgress = new TaskProgress();
+            taskProgress.setTask(task);
+            taskProgress.setQuestProgress(questProgress);
+            questProgress.getTaskProgresses().add(taskProgress);
+        }
+        questProgressRepository.save(questProgress);
+        persistParticipant(token, questProgress);
+        return generateEnrollResponse(questProgress);
+    }
+
+    @Transactional
+    public AnswerResponseDto checkAnswer(Long taskProgressId, String answer) {
+        TaskProgress taskProgress = taskProgressRepository.findOne(taskProgressId);
+        boolean rightAnswer = taskProgress.getTask().getSolution().equals(answer);
+        QuestProgress questProgress = taskProgress.getQuestProgress();
+        if (rightAnswer) {
+            taskProgress.setSolved(true);
+            checkQuestIsFinished(questProgress);
+        }
+        AnswerResponseDto answerResponseDto = new AnswerResponseDto();
+        answerResponseDto.setQuestProgressResponseDto(getQuest(questProgress.getId()));
+        answerResponseDto.setRightAnswer(rightAnswer);
+        return answerResponseDto;
+    }
+
+    private void checkQuestIsFinished(QuestProgress questProgress) {
+        QuestProgress.Status newQuestStatus = QuestProgress.Status.FINISHED;
+        for (TaskProgress progress : questProgress.getTaskProgresses()) {
+            if (!progress.isSolved()) {
+                newQuestStatus = QuestProgress.Status.IN_PROGRESS;
+                break;
+            }
+        }
+        questProgress.setStatus(newQuestStatus);
+    }
+
+    private QuestEnrollResponseDto generateEnrollResponse(QuestProgress questProgress) {
+        List<UserShortInfoDto> participants = questProgress.getParticipants().stream()
+                .map(participant -> modelMapper.map(participant.getUser(), UserShortInfoDto.class))
+                .collect(Collectors.toList());
+        return new QuestEnrollResponseDto(questProgress.getId(), questProgress.getCode(), questProgress.getTeamName(), participants);
+    }
+
+    private void persistParticipant(String token, QuestProgress questProgress) {
+        User user = userRepository.findUserByToken(token);
+        Participant participant = new Participant();
+        participant.setQuestProgress(questProgress);
+        participant.setUser(user);
+        participantRepository.save(participant);
+    }
+
+    private TaskDto parseTaskDto(TaskProgress taskProgress) {
+        TaskDto taskDto = modelMapper.map(taskProgress.getTask(), TaskDto.class);
+        taskDto.setSolved(taskProgress.isSolved());
+        return taskDto;
     }
 }
