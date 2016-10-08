@@ -3,8 +3,8 @@ INSERT into quest (quest_description,quest_maxPlayers, quest_name, quest_rating,
 INSERT into quest (quest_description,quest_maxPlayers, quest_name, quest_rating, quest_picture, quest_id) values ("quest description third",2,"quest",3,"https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTszzxP_fU3TiFjPcd9Q6Oqw_HsZVwnoDqXGuPMppQ0lbkAVdwYMA", 3);
 INSERT into quest (quest_description,quest_maxPlayers, quest_name, quest_rating, quest_picture, quest_id) values ("quest description fourth",20,"quest",4,"http://www-images.theonering.org/torwp/wp-content/uploads/2013/04/Quest.jpg", 4);
 
-insert into task (task_description, task_name, task_picture, task_solution, task_order_number,task_type, task_quest_id) values ("task description first", "task 1", task_picture, "solution", 3, 1);
-insert into task (task_description, task_name, task_picture, task_solution, task_order_number,task_type, task_quest_id) values ("task description first", "task 1", task_picture, "solution", 3, 2);
-insert into task (task_description, task_name, task_picture, task_solution, task_order_number,task_type, task_quest_id) values ("task description first", "task 1", task_picture, "solution", 3, 3);
-insert into task (task_description, task_name, task_picture, task_solution, task_order_number,task_type, task_quest_id) values ("task description first", "task 1", task_picture, "solution", 3, 3);
-insert into task (task_description, task_name, task_picture, task_solution, task_order_number,task_type, task_quest_id) values ("task description first", "task 1", task_picture, "solution", 3, 4);
+insert into task (task_description, task_name, task_picture, task_solution, task_order_number,task_type, task_quest_id) values ("task description first", "task 1", task_picture, "solution", 3,"QR", 1);
+insert into task (task_description, task_name, task_picture, task_solution, task_order_number,task_type, task_quest_id) values ("task description first", "task 1", task_picture, "solution", 3,"QR", 2);
+insert into task (task_description, task_name, task_picture, task_solution, task_order_number,task_type, task_quest_id) values ("task description first", "task 1", task_picture, "solution", 3,"QR", 3);
+insert into task (task_description, task_name, task_picture, task_solution, task_order_number,task_type, task_quest_id) values ("task description first", "task 1", task_picture, "solution", 3,"QR", 3);
+insert into task (task_description, task_name, task_picture, task_solution, task_order_number,task_type, task_quest_id) values ("task description first", "task 1", task_picture, "solution", 3,"QR", 4);
