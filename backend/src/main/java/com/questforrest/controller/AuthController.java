@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+    public static final String TOKEN_HEADER = "Authorization";
     @Autowired
     private UserService userService;
 
@@ -43,7 +44,7 @@ public class AuthController {
 
     @RequestMapping(value = "/vk/authorize", method = RequestMethod.POST)
     public ResponseEntity vkAuthorize(@RequestBody UserDto userDto, HttpRequest httpRequest) throws InvalidTokenException {
-        String token = httpRequest.getHeaders().getFirst("Authorization");
+        String token = httpRequest.getHeaders().getFirst(TOKEN_HEADER);
         UserDto authorizedUser = userService.vkAuthorize(userDto, token);
         if(authorizedUser != null){
             return new ResponseEntity(userDto, HttpStatus.ACCEPTED);

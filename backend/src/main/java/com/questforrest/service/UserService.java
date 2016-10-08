@@ -67,6 +67,15 @@ public class UserService {
         return userDto;
     }
 
+    @Transactional
+    public UserDto getUserByToken(String token) throws InvalidTokenException {
+        if (token.isEmpty()){
+            throw new InvalidTokenException();
+        }
+        User user = userRepository.findUserByToken(token);
+        return modelMapper.map(user, UserDto.class);
+    }
+
     private boolean isTokenValid(String token, String userId) {
         String url = VK_API_URL.replace("{token}", token);
 //      {"response":[{"uid":247830875,"first_name":"Testname","last_name":"Testsurname"}]}
