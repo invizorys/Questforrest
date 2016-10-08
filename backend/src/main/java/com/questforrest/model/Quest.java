@@ -17,9 +17,7 @@ public class Quest {
     private String name;
     @Column(name = "quest_description")
     private String description;
-    @Column(name = "quest_rating")
-    private double rating;
-    @OneToMany(mappedBy = "quest")
+    @OneToMany(mappedBy = "quest", cascade = CascadeType.ALL)
     private List<Task> tasks;
     @Column(name = "quest_maxPlayers")
     private int maxPlayers;
@@ -48,14 +46,6 @@ public class Quest {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public double getRating() {
-        return rating;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
     }
 
     public List<Task> getTasks() {

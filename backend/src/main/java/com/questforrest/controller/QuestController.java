@@ -1,13 +1,11 @@
 package com.questforrest.controller;
 
 import com.questforrest.dto.QuestDto;
-import com.questforrest.model.Quest;
 import com.questforrest.service.QuestService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,14 +19,18 @@ public class QuestController {
     private QuestService questService;
 
     @RequestMapping(value = "/{questId}", method = RequestMethod.GET)
-    public QuestDto getQuest(@PathVariable Long questId){
+    public QuestDto getQuest(@PathVariable Long questId) {
         return questService.getQuest(questId);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<QuestDto> getQuests(){
+    public List<QuestDto> getQuests() {
         return questService.getQuests();
     }
 
-
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity addQuest(@RequestBody QuestDto questDto) {
+        questService.addQuest(questDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

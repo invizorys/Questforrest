@@ -1,7 +1,5 @@
 package com.questforrest.dto;
 
-import com.questforrest.model.Task;
-
 import java.util.List;
 
 /**
@@ -11,7 +9,6 @@ public class QuestDto {
     private Long id;
     private String name;
     private String description;
-    private double rating;
     private List<TaskDto> tasks;
     private int maxPlayers;
     private String pictureUrl;
@@ -38,14 +35,6 @@ public class QuestDto {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public double getRating() {
-        return rating;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
     }
 
     public List<TaskDto> getTasks() {
