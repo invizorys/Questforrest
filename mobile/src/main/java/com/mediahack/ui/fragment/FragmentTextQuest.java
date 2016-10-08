@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.mediahack.R;
-import com.mediahack.Util;
+import com.mediahack.util.Util;
 import com.mediahack.ui.activity.QuestActivity;
 import com.questforrest.dto.TaskDto;
 

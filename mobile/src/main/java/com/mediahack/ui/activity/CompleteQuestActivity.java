@@ -30,7 +30,7 @@ public class CompleteQuestActivity extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_ok:
-                QuestListActivity.startActivity(this);
+                QuestListActivity.startActivity(this, true);
                 break;
         }
     }

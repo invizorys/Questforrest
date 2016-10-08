@@ -10,10 +10,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mediahack.R;
-import com.mediahack.Util;
 import com.mediahack.presentation.presenter.QuestListPresenter;
 import com.mediahack.presentation.view.QuestListView;
 import com.mediahack.ui.adapter.QuestAdapter;
+import com.mediahack.util.Util;
 import com.questforrest.dto.QuestDto;
 
 import java.util.List;
@@ -23,8 +23,11 @@ public class QuestListActivity extends AppCompatActivity implements QuestAdapter
     private QuestListPresenter presenter;
     private QuestAdapter adapter;
 
-    public static void startActivity(Context context) {
+    public static void startActivity(Context context, boolean clearStack) {
         Intent intent = new Intent(context, QuestListActivity.class);
+        if (clearStack) {
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        }
         context.startActivity(intent);
     }
 

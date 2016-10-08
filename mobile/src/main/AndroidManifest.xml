@@ -36,6 +36,10 @@
             android:name=".ui.activity.CompleteQuestActivity"
             android:label="@string/title_activity_complete_quest"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name="com.vk.sdk.VKServiceActivity"
+            android:label="ServiceActivity"
+            android:theme="@style/VK.Transparent" />
     </application>
 
 </manifest>

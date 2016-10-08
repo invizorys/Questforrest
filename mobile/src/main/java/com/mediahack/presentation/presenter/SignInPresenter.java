@@ -21,7 +21,7 @@ public class SignInPresenter {
         this.view = view;
     }
 
-    public void getSomething() {
+    public void login() {
 
     }
 }
