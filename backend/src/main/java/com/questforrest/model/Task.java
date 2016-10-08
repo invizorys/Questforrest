@@ -1,5 +1,6 @@
 package com.questforrest.model;
 
+
 import com.questforrest.dto.Type;
 
 import javax.persistence.*;

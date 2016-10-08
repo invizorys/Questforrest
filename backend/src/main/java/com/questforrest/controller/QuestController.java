@@ -13,7 +13,7 @@ import java.util.List;
  * Created by root on 08.10.16.
  */
 @RestController
-@RequestMapping("quest")
+@RequestMapping("/quest")
 public class QuestController {
     @Autowired
     private QuestService questService;
