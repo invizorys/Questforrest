@@ -12,7 +12,6 @@ public class TaskDto {
     private String description;
     private String solution;
     private int taskOrderNumber;
-    private QuestDto quest;
 
     public Long getId() {
         return id;
@@ -60,13 +59,5 @@ public class TaskDto {
 
     public void setTaskOrderNumber(int taskOrderNumber) {
         this.taskOrderNumber = taskOrderNumber;
-    }
-
-    public QuestDto getQuest() {
-        return quest;
-    }
-
-    public void setQuest(QuestDto quest) {
-        this.quest = quest;
     }
 }
