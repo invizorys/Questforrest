@@ -43,11 +43,10 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/vk/authorize", method = RequestMethod.POST)
-    public ResponseEntity vkAuthorize(@RequestBody UserDto userDto, HttpRequest httpRequest) throws InvalidTokenException {
-        String token = httpRequest.getHeaders().getFirst(TOKEN_HEADER);
-        UserDto authorizedUser = userService.vkAuthorize(userDto, token);
+    public ResponseEntity vkAuthorize(@RequestBody RegistrationRequestDto registrationDto) throws InvalidTokenException {
+        UserDto authorizedUser = userService.vkAuthorize(registrationDto.getUserDto(), registrationDto.getAccessToken());
         if(authorizedUser != null){
-            return new ResponseEntity(userDto, HttpStatus.ACCEPTED);
+            return new ResponseEntity(authorizedUser, HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
