@@ -6,24 +6,34 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.mediahack.R;
+import com.mediahack.presentation.presenter.QuestPresenter;
+import com.mediahack.presentation.view.QuestView;
 import com.mediahack.ui.adapter.QuestPagerAdapter;
-import com.questforrest.dto.QuestDto;
-import com.questforrest.dto.TaskDto;
+import com.mediahack.util.Util;
+import com.questforrest.dto.QuestProgressResponseDto;
+import com.questforrest.dto.TaskProgressDto;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.List;
 
-public class QuestActivity extends AppCompatActivity implements View.OnClickListener {
-    private final static String QUEST = "quest";
+public class QuestActivity extends AppCompatActivity implements View.OnClickListener, QuestView {
+    private final static String QUEST_PROGRESS = "questProgress";
+    private final static String QUEST_NAME = "questName";
     private ViewPager pager;
-    private List<TaskDto> tasks;
+    private List<TaskProgressDto> tasks;
+    private QuestProgressResponseDto questProgressResponseDto;
+    private QuestPresenter presenter;
 
-    public static void startActivity(Context context, QuestDto quest) {
+    public static void startActivity(Context context, QuestProgressResponseDto quest,
+                                     String questName) {
         Intent intent = new Intent(context, QuestActivity.class);
-        intent.putExtra(QUEST, quest);
+        intent.putExtra(QUEST_PROGRESS, quest);
+        intent.putExtra(QUEST_NAME, questName);
         context.startActivity(intent);
     }
 
@@ -35,9 +45,11 @@ public class QuestActivity extends AppCompatActivity implements View.OnClickList
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        QuestDto quest = (QuestDto) getIntent().getSerializableExtra(QUEST);
-        tasks = quest.getTasks();
-        getSupportActionBar().setTitle(quest.getName());
+        questProgressResponseDto = (QuestProgressResponseDto) getIntent().getSerializableExtra(QUEST_PROGRESS);
+        String questName = getIntent().getStringExtra(QUEST_NAME);
+
+        tasks = questProgressResponseDto.getTaskProgresses();
+        getSupportActionBar().setTitle(questName);
 
         findViewById(R.id.button_next).setOnClickListener(this);
 
@@ -66,6 +78,29 @@ public class QuestActivity extends AppCompatActivity implements View.OnClickList
         pageIndicator.setViewPager(pager);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_quest, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {// handle arrow click here
+            finish();
+        }
+        if (item.getItemId() == R.id.action_info) {
+            showInfoDialog("Team name: " + questProgressResponseDto.getTeamName() + "\n" +
+                    "Code: " + questProgressResponseDto.getCode());
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showInfoDialog(String text) {
+        Util.getStandardDialog(this, text).show();
+    }
+
     public void showNextTask() {
         if (isAllTaskSolved()) {
             CompleteQuestActivity.startActivity(this);
@@ -84,7 +119,7 @@ public class QuestActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private boolean isAllTaskSolved() {
-        for (TaskDto task : tasks) {
+        for (TaskProgressDto task : tasks) {
             if (!task.isSolved()) {
                 return false;
             }

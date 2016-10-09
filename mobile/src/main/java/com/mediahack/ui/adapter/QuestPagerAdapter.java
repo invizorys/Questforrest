@@ -8,6 +8,7 @@ import com.mediahack.ui.fragment.FragmentLocationQuest;
 import com.mediahack.ui.fragment.FragmentQRCodeQuest;
 import com.mediahack.ui.fragment.FragmentTextQuest;
 import com.questforrest.dto.TaskDto;
+import com.questforrest.dto.TaskProgressDto;
 
 import java.util.List;
 
@@ -16,13 +17,17 @@ import java.util.List;
  */
 
 public class QuestPagerAdapter extends FragmentPagerAdapter {
-    private static int PAGE_COUNT = 3;
-    private List<TaskDto> tasks;
+    private static int PAGE_COUNT;
+    private List<TaskProgressDto> tasks;
 
-    public QuestPagerAdapter(FragmentManager fm, List<TaskDto> tasks) {
+    public QuestPagerAdapter(FragmentManager fm, List<TaskProgressDto> tasks) {
         super(fm);
-        PAGE_COUNT = tasks.size();
-        this.tasks = tasks;
+        if (tasks != null) {
+            PAGE_COUNT = tasks.size();
+            this.tasks = tasks;
+        } else {
+            PAGE_COUNT = 0;
+        }
     }
 
     @Override

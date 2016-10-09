@@ -10,19 +10,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mediahack.R;
-import com.mediahack.util.Util;
 import com.mediahack.ui.activity.QuestActivity;
-import com.questforrest.dto.TaskDto;
+import com.mediahack.util.Util;
+import com.questforrest.dto.TaskProgressDto;
 
 public class FragmentLocationQuest extends Fragment implements View.OnClickListener {
     private static final String TASK = "task";
-    private TaskDto task;
+    private TaskProgressDto task;
 
     public FragmentLocationQuest() {
         // Required empty public constructor
     }
 
-    public static FragmentLocationQuest newInstance(TaskDto taskDto) {
+    public static FragmentLocationQuest newInstance(TaskProgressDto taskDto) {
         FragmentLocationQuest fragment = new FragmentLocationQuest();
         Bundle args = new Bundle();
         args.putSerializable(TASK, taskDto);
@@ -34,7 +34,7 @@ public class FragmentLocationQuest extends Fragment implements View.OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            task = (TaskDto) getArguments().getSerializable(TASK);
+            task = (TaskProgressDto) getArguments().getSerializable(TASK);
         }
     }
 

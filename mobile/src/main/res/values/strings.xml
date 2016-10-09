@@ -11,4 +11,11 @@
     <string name="update">Update</string>
     <string name="title_activity_complete_quest">CompleteQuestActivity</string>
     <string name="internet_is_unavailable">Internet is unavailable</string>
+    <string name="join_to_quest">Join to quest</string>
+    <string name="cancel">Cancel</string>
+    <string name="failure_create_team_message">failure create team</string>
+    <string name="failure_enroll_quest_message">Failure enroll quest</string>
+    <string name="join">Join</string>
+    <string name="failure_retrieve_quests_message">Failure retrieve quests</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

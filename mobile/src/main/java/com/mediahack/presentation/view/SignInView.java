@@ -5,4 +5,6 @@ package com.mediahack.presentation.view;
  */
 
 public interface SignInView {
+    void showMessageDialog(String text);
+    void onSuccessfulLogin();
 }

@@ -5,11 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mediahack.R;
-import com.questforrest.dto.QuestDto;
+import com.questforrest.dto.QuestShortInfoDto;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -21,14 +22,14 @@ import java.util.List;
 
 public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.ViewHolder> {
     private Context context;
-    private List<QuestDto> quests = new ArrayList<>();
+    private List<QuestShortInfoDto> quests = new ArrayList<>();
     private AdapterListener listener;
 
     public QuestAdapter(AdapterListener listener) {
         this.listener = listener;
     }
 
-    public QuestAdapter(List<QuestDto> quests, AdapterListener listener) {
+    public QuestAdapter(List<QuestShortInfoDto> quests, AdapterListener listener) {
         this.quests = quests;
         this.listener = listener;
     }
@@ -42,10 +43,20 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(QuestAdapter.ViewHolder holder, int position) {
-        final QuestDto quest = quests.get(position);
+        final QuestShortInfoDto quest = quests.get(position);
         Picasso.with(context).load(quest.getPictureUrl()).into(holder.imageView);
         holder.title.setText(quest.getName());
         holder.description.setText(quest.getDescription());
+
+        if (!quest.isEnrolled()) {
+            holder.btnJoin.setVisibility(View.VISIBLE);
+            holder.btnJoin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onJoinClicked(quest.getId(), quest.getName());
+                }
+            });
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +71,7 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.ViewHolder> 
         return quests.size();
     }
 
-    public void setQuests(List<QuestDto> quests) {
+    public void setQuests(List<QuestShortInfoDto> quests) {
         this.quests = quests;
         notifyDataSetChanged();
     }
@@ -68,16 +79,19 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.ViewHolder> 
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView title, description;
+        Button btnJoin;
 
         ViewHolder(View view) {
             super(view);
             imageView = (ImageView) view.findViewById(R.id.image_view);
             title = (TextView) view.findViewById(R.id.text_view_title);
             description = (TextView) view.findViewById(R.id.text_view_description);
+            btnJoin = (Button) view.findViewById(R.id.button_join);
         }
     }
 
     public interface AdapterListener {
-        void onItemClicked(QuestDto quest);
+        void onItemClicked(QuestShortInfoDto quest);
+        void onJoinClicked(Long questId, String questName);
     }
 }

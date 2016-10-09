@@ -13,7 +13,6 @@ public class QuestMetadataResponseDto {
     private int maxPlayers;
     private String pictureUrl;
 
-
     public Long getId() {
         return id;
     }

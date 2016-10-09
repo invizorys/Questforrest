@@ -29,7 +29,7 @@ public class SignInActivity extends AppCompatActivity implements SignInView, Vie
         setContentView(R.layout.activity_sign_in);
 
         if (!TextUtils.isEmpty(SharedPrefHelper.getToken())) {
-            QuestListActivity.startActivity(this, true);
+            QuestListActivity.startActivity(this);
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -41,12 +41,12 @@ public class SignInActivity extends AppCompatActivity implements SignInView, Vie
     }
 
     private void vkLogin() {
-        if (Util.isInternetAvailable()) {
+//        if (Util.isInternetAvailable()) {
             VkSocialHelper vkSocialNetwork = new VkSocialHelper(this);
             vkSocialNetwork.login();
-        } else {
-            Toast.makeText(this, R.string.internet_is_unavailable, Toast.LENGTH_SHORT).show();
-        }
+//        } else {
+//            Toast.makeText(this, R.string.internet_is_unavailable, Toast.LENGTH_SHORT).show();
+//        }
     }
 
     @Override
@@ -54,9 +54,7 @@ public class SignInActivity extends AppCompatActivity implements SignInView, Vie
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
             @Override
             public void onResult(VKAccessToken res) {
-                String accessToken = res.accessToken;
-                SharedPrefHelper.saveToken(accessToken);
-//                Settings.saveToken(LoginActivity.this, accessToken);
+                presenter.login(res.userId, res.accessToken);
 
                 // User passed Authorization
 //                new VkSocialNetwork(LoginActivity.this).getUserData(LoginActivity.this);
@@ -77,8 +75,17 @@ public class SignInActivity extends AppCompatActivity implements SignInView, Vie
         switch (v.getId()) {
             case R.id.button_login_vk:
                 vkLogin();
-//                QuestListActivity.startActivity(this);
                 break;
         }
+    }
+
+    @Override
+    public void showMessageDialog(String text) {
+        Util.getStandardDialog(this, text).show();
+    }
+
+    @Override
+    public void onSuccessfulLogin() {
+        QuestListActivity.startActivity(this);
     }
 }
