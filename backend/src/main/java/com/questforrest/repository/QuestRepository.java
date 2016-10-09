@@ -3,6 +3,7 @@ package com.questforrest.repository;
 import com.questforrest.model.Quest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,5 +15,5 @@ import java.util.List;
 public interface QuestRepository extends JpaRepository<Quest, Long> {
 
     @Query(value = "select p.questProgress.quest from Participant p where p.user.id = :id")
-    List<Quest> findQuestsUserEnrolled(Long id);
+    List<Quest> findQuestsUserEnrolled(@Param("id") Long id);
 }

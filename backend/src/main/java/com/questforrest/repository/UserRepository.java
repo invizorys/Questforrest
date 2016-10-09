@@ -14,5 +14,5 @@ import javax.jws.soap.SOAPBinding;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     User findUserByToken(String token);
-    User findOneByLogin(String login);
+    User findUserByLogin(String login);
 }

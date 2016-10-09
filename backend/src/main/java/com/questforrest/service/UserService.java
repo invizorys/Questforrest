@@ -35,7 +35,7 @@ public class UserService {
     @Transactional
     public UserDto register(RegistrationRequestDto requestDto) throws UserAlreadyExistException {
         User user = modelMapper.map(requestDto.getUserDto(), User.class);
-        if(userRepository.findOneByLogin(user.getLogin()) != null){
+        if(userRepository.findUserByLogin(user.getLogin()) != null){
             throw new UserAlreadyExistException();
         }
         user.setPassword(encriptMD5(requestDto.getPassword()));
@@ -46,7 +46,7 @@ public class UserService {
 
     @Transactional
     public UserDto login(String login, String password){
-        User user = userRepository.findOneByLogin(login);
+        User user = userRepository.findUserByLogin(login);
         if(user != null){
             if(user.getPassword().equals(encriptMD5(password))){
                 return modelMapper.map(user, UserDto.class);
@@ -58,7 +58,7 @@ public class UserService {
     @Transactional
     public UserDto vkAuthorize(UserDto userDto, String token, String userId) throws InvalidTokenException {
         if (!isTokenValid(token, userId)) throw new InvalidTokenException();
-        User user = userRepository.findOneByLogin(userDto.getLogin());
+        User user = userRepository.findUserByLogin(userDto.getLogin());
         if (user == null) {
             user.setToken(UUID.randomUUID().toString().toUpperCase());
             user = userRepository.save(modelMapper.map(userDto, User.class));
