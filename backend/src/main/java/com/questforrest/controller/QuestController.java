@@ -4,6 +4,7 @@ import com.questforrest.dto.CreateQuestRequestDto;
 import com.questforrest.service.QuestService;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -87,9 +88,4 @@ public class QuestController {
 //        Integer status = response.getStatusLine().getStatusCode();
 //        return new ResponseEntity<>(HttpStatus.ACCEPTED);
 //}
-
-    private String getToken(HttpRequest request) {
-        HttpHeaders headers = request.getHeaders();
-        return (headers == null || !headers.containsKey("token")) ? null : headers.get("token").get(0);
-    }
 }
