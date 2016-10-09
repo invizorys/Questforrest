@@ -38,7 +38,7 @@ public class AuthController {
     @RequestMapping(value = "/vk/authorize", method = RequestMethod.POST)
     public ResponseEntity vkAuthorize(@RequestBody RegistrationRequestDto regDto) throws InvalidTokenException {
         UserDto authorizedUser = userService.vkAuthorize(regDto.getAccessToken(), regDto.getUserId());
-        return authorizedUser == null ?new ResponseEntity(HttpStatus.UNAUTHORIZED) :new ResponseEntity<>(authorizedUser, HttpStatus.ACCEPTED);
+        return authorizedUser == null ? new ResponseEntity(HttpStatus.UNAUTHORIZED) :new ResponseEntity<>(authorizedUser, HttpStatus.ACCEPTED);
     }
 
     private ResponseEntity getResponseEntity(UserDto authorizedUser) {

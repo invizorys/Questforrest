@@ -1,10 +1,10 @@
 package com.questforrest.controller;
 
 import com.questforrest.dto.CreateQuestRequestDto;
+import com.questforrest.exception.InvalidTokenException;
 import com.questforrest.service.QuestService;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +33,7 @@ public class QuestController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity getQuests(HttpServletRequest request) {
+    public ResponseEntity getQuests(HttpServletRequest request) throws InvalidTokenException {
         String token = request.getHeader("token");
         return new ResponseEntity<>(token == null ?
                 questService.getQuests() :
@@ -68,6 +68,11 @@ public class QuestController {
         return token == null ?
                 new ResponseEntity(HttpStatus.UNAUTHORIZED) :
                 new ResponseEntity<>(questService.createTeam(questId, token, teamName), HttpStatus.OK);
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = "Invalid Token")
+    public void invalidUserToken() {
     }
 
 //    @RequestMapping(value = "/{questId}/post", method = RequestMethod.POST)
