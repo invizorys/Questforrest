@@ -150,6 +150,7 @@ public class QuestService {
         Participant participant = new Participant();
         participant.setQuestProgress(questProgress);
         participant.setUser(user);
+        questProgress.getParticipants().add(participant);
         participantRepository.save(participant);
     }
 

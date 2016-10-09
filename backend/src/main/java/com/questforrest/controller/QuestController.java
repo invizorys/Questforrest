@@ -7,10 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/quest")
@@ -18,6 +15,7 @@ public class QuestController {
     @Autowired
     private QuestService questService;
 
+    @CrossOrigin
     @RequestMapping(value = "/{questId}", method = RequestMethod.GET)
     public ResponseEntity getQuest(@PathVariable Long questId) {
         return new ResponseEntity<>(questService.getQuestMetadata(questId), HttpStatus.OK);
@@ -31,6 +29,7 @@ public class QuestController {
                 new ResponseEntity<>(questService.getQuestProgress(questId, token), HttpStatus.OK);
     }
 
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getQuests(HttpRequest request) {
         String token = getToken(request);

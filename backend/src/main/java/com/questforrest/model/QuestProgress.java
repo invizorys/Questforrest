@@ -22,12 +22,12 @@ public class QuestProgress {
     private Long id;
     @OneToMany(mappedBy = "questProgress", cascade = CascadeType.ALL)
     private List<TaskProgress> taskProgresses;
-    @OneToMany(mappedBy = "questProgress")
+    @OneToMany(mappedBy = "questProgress", cascade = CascadeType.ALL)
     private List<Participant> participants;
     @Column(name = "status")
     @Enumerated
     private Status status;
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "quest_id")
     private Quest quest;
     @DateTimeFormat
