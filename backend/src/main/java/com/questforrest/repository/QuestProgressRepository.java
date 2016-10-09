@@ -12,8 +12,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface QuestProgressRepository extends JpaRepository<QuestProgress, Long> {
     @Query(value = "select qp from QuestProgress qp where qp.quest.id = :questId and qp.code = :questCode")
-    QuestProgress findQuestProgress(Long questId, String questCode);
+    QuestProgress findQuestProgress(@Param("questId")Long questId, @Param("questCode")String questCode);
 
     @Query(value = "select p.questProgress from Participant p where p.questProgress.quest.id = :questId and p.user.token = :token")
-    QuestProgress findQuestProgressByQuestIdAndUserToken(Long questId, String token);
+    QuestProgress findQuestProgressByQuestIdAndUserToken(@Param("questId")Long questId, @Param("token")String token);
 }
