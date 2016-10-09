@@ -17,26 +17,28 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    public static final String TOKEN_HEADER = "Authorization";
     @Autowired
     private UserService userService;
 
+    @CrossOrigin
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public ResponseEntity register(@RequestBody RegistrationRequestDto requestDto) throws UserAlreadyExistException {
         UserDto userDto = userService.register(requestDto);
         return getResponseEntity(userDto);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity login(@RequestBody CredentialDto credential) {
         UserDto userDto = userService.login(credential.getLogin(), credential.getPassword());
         return getResponseEntity(userDto);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/vk/authorize", method = RequestMethod.POST)
     public ResponseEntity vkAuthorize(@RequestBody RegistrationRequestDto regDto) throws InvalidTokenException {
-        UserDto authorizedUser = userService.vkAuthorize(regDto.getUserDto(), regDto.getAccessToken(), regDto.getUserId());
-        return getResponseEntity(authorizedUser);
+        UserDto authorizedUser = userService.vkAuthorize(regDto.getAccessToken(), regDto.getUserId());
+        return authorizedUser == null ? new ResponseEntity(HttpStatus.UNAUTHORIZED) :new ResponseEntity<>(authorizedUser, HttpStatus.ACCEPTED);
     }
 
     private ResponseEntity getResponseEntity(UserDto authorizedUser) {

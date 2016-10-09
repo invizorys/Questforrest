@@ -1,6 +1,7 @@
 package com.questforrest.service;
 
 import com.questforrest.dto.*;
+import com.questforrest.exception.InvalidTokenException;
 import com.questforrest.model.*;
 import com.questforrest.repository.*;
 import org.modelmapper.ModelMapper;
@@ -45,8 +46,9 @@ public class QuestService {
     }
 
     @Transactional(readOnly = true)
-    public QuestListResponseDto getQuests(String token) {
+    public QuestListResponseDto getQuests(String token) throws InvalidTokenException {
         User user = userRepository.findUserByToken(token);
+        if(user == null) throw new InvalidTokenException();
         List<Quest> questsUserEnrolled = questRepository.findQuestsUserEnrolled(user.getId());
         List<Quest> quests = questRepository.findAll();
         List<QuestShortInfoDto> questShortInfoDtos = quests.stream()

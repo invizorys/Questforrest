@@ -13,6 +13,7 @@ import java.net.URLConnection;
  */
 @Component
 public class UrlConnectionReader {
+
     public String getText(String url) throws IOException {
         URL website = new URL(url);
         URLConnection connection = website.openConnection();
