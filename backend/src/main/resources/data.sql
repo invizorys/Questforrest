@@ -7,7 +7,6 @@ insert into task (task_description, task_name, task_picture, task_solution, task
 values ("Find the shortest distance (in m) between:
 1. The mother of Kiev
 2. The wisdom of Kiev
-3. The freedom of Kiev", "Task 1", "http://skyandmethod.com/wp-content/uploads/2014/08/IMG_9518_Toronto_sandm_SM.jpg", "5200", 1,"TEXT", 1);
-,
-("Find the shortest route in Kiev. Try it. You'll find a QR code somewhere there", "Task 2", "http://v.img.com.ua/b/600x500/d/d9/299b235bcaa4f9fec9cb591444321d9d.jpg", "Done", 2,"QR", 1),
+3. The freedom of Kiev", "Task 1", "http://skyandmethod.com/wp-content/uploads/2014/08/IMG_9518_Toronto_sandm_SM.jpg", "5200", 1,"TEXT", 1),
+("Find the shortest route in Kiev. Try it. You will find a QR code somewhere there", "Task 2", "http://v.img.com.ua/b/600x500/d/d9/299b235bcaa4f9fec9cb591444321d9d.jpg", "Done", 2,"QR", 1),
 ("Find the most popular Kiev souvenir. It is 60 years old", "Task 3", "https://cdn3.iconfinder.com/data/icons/christmas-set-1/512/giftbox_2-512.png", "Cake", 3,"TEXT", 1);
