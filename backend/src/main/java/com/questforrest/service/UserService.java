@@ -1,7 +1,5 @@
 package com.questforrest.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.questforrest.dto.RegistrationRequestDto;
 import com.questforrest.dto.UserDto;
 import com.questforrest.exception.InvalidTokenException;
@@ -66,7 +64,7 @@ public class UserService {
             try {
                 String response = urlConnectionReader.getText(url);
                 GsonJsonParser gsonJsonParser = new GsonJsonParser();
-                Map<String, Object> vkUserInfo = (Map)((List)gsonJsonParser.parseMap(response).get("response")).get(0);
+                Map<String, Object> vkUserInfo = (Map) ((List) gsonJsonParser.parseMap(response).get("response")).get(0);
                 String firstName = (String) vkUserInfo.get("first_name");
                 String lastName = (String) vkUserInfo.get("last_name");
                 user = new User();
@@ -74,7 +72,7 @@ public class UserService {
                 user.setName(firstName);
                 user.setSurname(lastName);
                 user.setToken(UUID.randomUUID().toString().toUpperCase());
-            }catch (IOException ex){
+            } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
             userRepository.save(user);

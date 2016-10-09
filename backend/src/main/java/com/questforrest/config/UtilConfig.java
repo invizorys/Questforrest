@@ -37,26 +37,12 @@ public class UtilConfig {
         return modelMapper;
     }
 
-    //    @Bean
-//    public FilterRegistrationBean someFilterRegistration() {
-//        FilterRegistrationBean registration = new FilterRegistrationBean();
-//        registration.setFilter(corsFilter());
-//        registration.addUrlPatterns("/*");
-//        registration.addInitParameter("cors.allowed.headers", "Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Access-Control-Allow-Origin,Access-Control-Allow-Headers,Authorization");
-//        registration.setName("CorsFilter");
-//        return registration;
-//    }
-//
-//    @Bean("corsFilter")
-//    public Filter corsFilter() {
-//        return new CorsFilter();
-//    }
     @Bean
     public DispatcherServletBeanPostProcessor dispatcherServletBeanPostProcessor() {
         return new DispatcherServletBeanPostProcessor();
     }
 
-    public static class DispatcherServletBeanPostProcessor implements BeanPostProcessor {
+    private class DispatcherServletBeanPostProcessor implements BeanPostProcessor {
         @Override
         public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
             if (bean instanceof DispatcherServlet) {
