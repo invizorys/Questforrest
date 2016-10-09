@@ -10,7 +10,4 @@ values ("Find the shortest distance (in m) between:
 3. The freedom of Kiev", "Task 1", "http://skyandmethod.com/wp-content/uploads/2014/08/IMG_9518_Toronto_sandm_SM.jpg", "5200", 1,"TEXT", 1);
 ,
 ("Find the shortest route in Kiev. Try it. You'll find a QR code somewhere there", "Task 2", "http://v.img.com.ua/b/600x500/d/d9/299b235bcaa4f9fec9cb591444321d9d.jpg", "Done", 2,"QR", 1),
-("task description first", "task 1", task_picture, "solution", 3,"QR", 1),
-("task description first", "task 1", task_picture, "solution", 3,"TEXT", 1),
-("task description first", "task 1", task_picture, "solution", 3,"LOCATION", 1),
-("task description first", "task 1", task_picture, "solution", 3,"TEXT", 1);
+("Find the most popular Kiev souvenir. It is 60 years old", "Task 3", "https://cdn3.iconfinder.com/data/icons/christmas-set-1/512/giftbox_2-512.png", "Cake", 3,"TEXT", 1);
