@@ -1,5 +1,7 @@
 package com.questforrest.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.questforrest.dto.RegistrationRequestDto;
 import com.questforrest.dto.UserDto;
 import com.questforrest.exception.InvalidTokenException;
@@ -9,6 +11,7 @@ import com.questforrest.repository.UserRepository;
 import com.questforrest.util.UrlConnectionReader;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +19,8 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -53,12 +58,26 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto vkAuthorize(UserDto userDto, String token, String userId) throws InvalidTokenException {
+    public UserDto vkAuthorize(String token, String userId) throws InvalidTokenException {
         if (!isTokenValid(token, userId)) throw new InvalidTokenException();
-        User user = userRepository.findUserByLogin(userDto.getLogin());
+        User user = userRepository.findUserByLogin(userId);
         if (user == null) {
-            user = userRepository.save(modelMapper.map(userDto, User.class));
+            String url = VK_API_URL.replace("{token}", token);
+            try {
+                String response = urlConnectionReader.getText(url);
+                GsonJsonParser gsonJsonParser = new GsonJsonParser();
+                Map<String, Object> vkUserInfo = (Map)((List)gsonJsonParser.parseMap(response).get("response")).get(0);
+                String firstName = (String) vkUserInfo.get("first_name");
+                String lastName = (String) vkUserInfo.get("last_name");
+                user = new User();
+                user.setLogin(userId);
+                user.setName(firstName);
+                user.setSurname(lastName);
+            }catch (IOException ex){
+                ex.printStackTrace();
+            }
             user.setToken(UUID.randomUUID().toString().toUpperCase());
+            userRepository.save(user);
         }
         userDto.setId(user.getId());
         return userDto;
@@ -77,7 +96,8 @@ public class UserService {
         String url = VK_API_URL.replace("{token}", token);
 //      {"response":[{"uid":247830875,"first_name":"Testname","last_name":"Testsurname"}]}
         try {
-            return urlConnectionReader.getText(url).contains("\"uid\":" + userId + ",");
+            String response = urlConnectionReader.getText(url);
+            return response.contains("\"uid\":" + userId + ",");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -94,5 +114,6 @@ public class UserService {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+        return hash;
     }
 }
