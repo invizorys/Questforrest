@@ -61,7 +61,7 @@ public class QuestController {
         String token = request.getHeader("token");
         return token == null ?
                 new ResponseEntity(HttpStatus.UNAUTHORIZED) :
-                new ResponseEntity<>(questService.checkAnswer(taskProgressId, answer), HttpStatus.OK);
+                new ResponseEntity<>(questService.checkAnswer(taskProgressId, answer.replaceAll("\"","")), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{questId}/team/{teamName}", method = RequestMethod.POST)
