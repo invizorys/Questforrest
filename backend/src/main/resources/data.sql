@@ -1,11 +1,7 @@
-INSERT into quest (quest_description,quest_maxPlayers, quest_name, quest_picture, quest_id) values ("quest description first",10,"quest","http://i.imgur.com/mxeb2NK.png", 1);
-INSERT into quest (quest_description,quest_maxPlayers, quest_name, quest_picture, quest_id) values ("quest description second",5,"quest","https://upload.wikimedia.org/wikipedia/commons/1/1f/Theodor_Kittelsen,_Soria_Moria.jpg", 2);
-INSERT into quest (quest_description,quest_maxPlayers, quest_name, quest_picture, quest_id) values ("quest description third",2,"quest","https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTszzxP_fU3TiFjPcd9Q6Oqw_HsZVwnoDqXGuPMppQ0lbkAVdwYMA", 3);
-INSERT into quest (quest_description,quest_maxPlayers, quest_name, quest_picture, quest_id) values ("quest description fourth",20,"quest","http://www-images.theonering.org/torwp/wp-content/uploads/2013/04/Quest.jpg", 4);
+INSERT into quest (quest_description,quest_maxPlayers, quest_name, quest_picture, quest_id)
+values ("Kiev. It is one of the most beautiful places in the world. It exites with its picturesque views, ancient buildings and wide roads.
+This quest will let you to find out more about the hidden magic of this city. Ready, steady, go!",
+10,"Magic Kiev","https://i.ytimg.com/vi/RAGrx9_yXSw/maxresdefault.jpg", 1);
 
-insert into task (task_description, task_name, task_picture, task_solution, task_order_number,task_type, task_quest_id) values ("task description first", "task 1", task_picture, "solution", 3,"QR", 1);
-insert into task (task_description, task_name, task_picture, task_solution, task_order_number,task_type, task_quest_id) values ("task description first", "task 1", task_picture, "solution", 3,"TEXT", 1);
-insert into task (task_description, task_name, task_picture, task_solution, task_order_number,task_type, task_quest_id) values ("task description first", "task 1", task_picture, "solution", 3,"LOCATION", 2);
-insert into task (task_description, task_name, task_picture, task_solution, task_order_number,task_type, task_quest_id) values ("task description first", "task 1", task_picture, "solution", 3,"TEXT", 3);
-insert into task (task_description, task_name, task_picture, task_solution, task_order_number,task_type, task_quest_id) values ("task description first", "task 1", task_picture, "solution", 3,"LOCATION", 1);
-insert into task (task_description, task_name, task_picture, task_solution, task_order_number,task_type, task_quest_id) values ("task description first", "task 1", task_picture, "solution", 3,"QR", 4);
+insert into task (task_description, task_name, task_picture, task_solution, task_order_number,task_type, task_quest_id)
+values ("task description first", "task 1", task_picture, "solution", 3,"QR", 1);

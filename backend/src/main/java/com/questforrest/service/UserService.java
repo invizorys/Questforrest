@@ -112,4 +112,14 @@ public class UserService {
             throw new RuntimeException(e);
         }
     }
+
+    private String getUserId(String token){
+        String url = VK_API_URL.replace("{token}", token);
+        try {
+            String response = urlConnectionReader.getText(url);
+            return response.split("\"uid\":")[0];
+        } catch (IOException e) {
+            return "Error";
+        }
+    }
 }

@@ -5,6 +5,8 @@ import com.questforrest.exception.InvalidTokenException;
 import com.questforrest.service.QuestService;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -83,8 +85,7 @@ public class QuestController {
 //                ":" +                           // ":"
 //                request.getServerPort() +       // "8080"
 //                request.getRequestURI().split("/post")[0];
-//        URIBuilder uriBuilder = new URIBuilder();
-//        uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/wall.post")
+//        String url = "https.api.vk.com/method/wall.post";
 //                .setParameter("domain", ownerVKId)
 //                .setParameter("attachments", link)
 //                .setParameter("access_token", accessToken);
