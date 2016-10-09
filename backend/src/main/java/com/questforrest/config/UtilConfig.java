@@ -1,13 +1,13 @@
 package com.questforrest.config;
 
-import org.apache.catalina.filters.CorsFilter;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.DispatcherServlet;
 
-import javax.servlet.Filter;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -37,18 +37,37 @@ public class UtilConfig {
         return modelMapper;
     }
 
+    //    @Bean
+//    public FilterRegistrationBean someFilterRegistration() {
+//        FilterRegistrationBean registration = new FilterRegistrationBean();
+//        registration.setFilter(corsFilter());
+//        registration.addUrlPatterns("/*");
+//        registration.addInitParameter("cors.allowed.headers", "Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Access-Control-Allow-Origin,Access-Control-Allow-Headers,Authorization");
+//        registration.setName("CorsFilter");
+//        return registration;
+//    }
+//
+//    @Bean("corsFilter")
+//    public Filter corsFilter() {
+//        return new CorsFilter();
+//    }
     @Bean
-    public FilterRegistrationBean someFilterRegistration() {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(corsFilter());
-        registration.addUrlPatterns("/*");
-        registration.addInitParameter("cors.allowed.headers", "Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization");
-        registration.setName("CorsFilter");
-        return registration;
+    public DispatcherServletBeanPostProcessor dispatcherServletBeanPostProcessor() {
+        return new DispatcherServletBeanPostProcessor();
     }
 
-    @Bean("corsFilter")
-    public Filter corsFilter() {
-        return new CorsFilter();
+    public static class DispatcherServletBeanPostProcessor implements BeanPostProcessor {
+        @Override
+        public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+            if (bean instanceof DispatcherServlet) {
+                ((DispatcherServlet) bean).setDispatchOptionsRequest(true);
+            }
+            return bean;
+        }
+
+        @Override
+        public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+            return bean;
+        }
     }
 }

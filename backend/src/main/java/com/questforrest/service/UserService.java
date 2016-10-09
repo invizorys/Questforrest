@@ -58,9 +58,9 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto vkAuthorize(String token, String userId) throws InvalidTokenException {
-        if (!isTokenValid(token, userId)) throw new InvalidTokenException();
-        User user = userRepository.findUserByLogin(userId);
+    public UserDto vkAuthorize(String token, String login) throws InvalidTokenException {
+        if (!isTokenValid(token, login)) throw new InvalidTokenException();
+        User user = userRepository.findUserByLogin(login);
         if (user == null) {
             String url = VK_API_URL.replace("{token}", token);
             try {
@@ -70,17 +70,16 @@ public class UserService {
                 String firstName = (String) vkUserInfo.get("first_name");
                 String lastName = (String) vkUserInfo.get("last_name");
                 user = new User();
-                user.setLogin(userId);
+                user.setLogin(login);
                 user.setName(firstName);
                 user.setSurname(lastName);
+                user.setToken(UUID.randomUUID().toString().toUpperCase());
             }catch (IOException ex){
-                ex.printStackTrace();
+                throw new RuntimeException(ex);
             }
-            user.setToken(UUID.randomUUID().toString().toUpperCase());
             userRepository.save(user);
         }
-        userDto.setId(user.getId());
-        return userDto;
+        return modelMapper.map(user, UserDto.class);
     }
 
     @Transactional
@@ -99,9 +98,8 @@ public class UserService {
             String response = urlConnectionReader.getText(url);
             return response.contains("\"uid\":" + userId + ",");
         } catch (IOException e) {
-            e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
 
@@ -114,6 +112,5 @@ public class UserService {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
-        return hash;
     }
 }

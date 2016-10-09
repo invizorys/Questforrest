@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 public class QuestController {
     @Autowired
     private QuestService questService;
+//    @Autowired
+//    private VkService vkService;
 
     @CrossOrigin
     @RequestMapping(value = "/{questId}", method = RequestMethod.GET)
@@ -65,5 +67,29 @@ public class QuestController {
         return token == null ?
                 new ResponseEntity(HttpStatus.UNAUTHORIZED) :
                 new ResponseEntity<>(questService.createTeam(questId, token, teamName), HttpStatus.OK);
+    }
+
+//    @RequestMapping(value = "/{questId}/post", method = RequestMethod.POST)
+//    public ResponseEntity postOnWall(@PathVariable Long questId, @RequestBody String ownerVKId, @RequestBody String accessToken,
+//                                     HttpServletRequest request) {
+//        String link = request.getScheme() + "://" +   // "http" + "://
+//                request.getServerName() +       // "myhost"
+//                ":" +                           // ":"
+//                request.getServerPort() +       // "8080"
+//                request.getRequestURI().split("/post")[0];
+//        URIBuilder uriBuilder = new URIBuilder();
+//        uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/wall.post")
+//                .setParameter("domain", ownerVKId)
+//                .setParameter("attachments", link)
+//                .setParameter("access_token", accessToken);
+//
+//        org.apache.http.HttpResponse response = HttpClie.connectResponse(uriBuilder);
+//        Integer status = response.getStatusLine().getStatusCode();
+//        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+//}
+
+    private String getToken(HttpRequest request) {
+        HttpHeaders headers = request.getHeaders();
+        return (headers == null || !headers.containsKey("token")) ? null : headers.get("token").get(0);
     }
 }

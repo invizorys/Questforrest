@@ -20,18 +20,21 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
+    @CrossOrigin
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public ResponseEntity register(@RequestBody RegistrationRequestDto requestDto) throws UserAlreadyExistException {
         UserDto userDto = userService.register(requestDto);
         return getResponseEntity(userDto);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity login(@RequestBody CredentialDto credential) {
         UserDto userDto = userService.login(credential.getLogin(), credential.getPassword());
         return getResponseEntity(userDto);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/vk/authorize", method = RequestMethod.POST)
     public ResponseEntity vkAuthorize(@RequestBody RegistrationRequestDto regDto) throws InvalidTokenException {
         UserDto authorizedUser = userService.vkAuthorize(regDto.getAccessToken(), regDto.getUserId());
