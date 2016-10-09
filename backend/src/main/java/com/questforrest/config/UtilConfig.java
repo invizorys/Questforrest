@@ -1,10 +1,13 @@
 package com.questforrest.config;
 
+import org.apache.catalina.filters.CorsFilter;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -32,5 +35,20 @@ public class UtilConfig {
             }
         });
         return modelMapper;
+    }
+
+    @Bean
+    public FilterRegistrationBean someFilterRegistration() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(corsFilter());
+        registration.addUrlPatterns("/*");
+        registration.addInitParameter("cors.allowed.headers", "Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization");
+        registration.setName("CorsFilter");
+        return registration;
+    }
+
+    @Bean("corsFilter")
+    public Filter corsFilter() {
+        return new CorsFilter();
     }
 }
