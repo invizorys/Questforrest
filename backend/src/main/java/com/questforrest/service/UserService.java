@@ -35,22 +35,19 @@ public class UserService {
     @Transactional
     public UserDto register(RegistrationRequestDto requestDto) throws UserAlreadyExistException {
         User user = modelMapper.map(requestDto.getUserDto(), User.class);
-        if(userRepository.findUserByLogin(user.getLogin()) != null){
+        if (userRepository.findUserByLogin(user.getLogin()) != null) {
             throw new UserAlreadyExistException();
         }
-        user.setPassword(encriptMD5(requestDto.getPassword()));
+        user.setPassword(encryptMD5(requestDto.getPassword()));
         user.setToken(UUID.randomUUID().toString().toUpperCase());
-        UserDto savedUser =  modelMapper.map(userRepository.save(user), UserDto.class);
-        return savedUser;
+        return modelMapper.map(userRepository.save(user), UserDto.class);
     }
 
     @Transactional
-    public UserDto login(String login, String password){
+    public UserDto login(String login, String password) {
         User user = userRepository.findUserByLogin(login);
-        if(user != null){
-            if(user.getPassword().equals(encriptMD5(password))){
-                return modelMapper.map(user, UserDto.class);
-            }
+        if (user != null && user.getPassword().equals(encryptMD5(password))) {
+            return modelMapper.map(user, UserDto.class);
         }
         return null;
     }
@@ -60,8 +57,8 @@ public class UserService {
         if (!isTokenValid(token, userId)) throw new InvalidTokenException();
         User user = userRepository.findUserByLogin(userDto.getLogin());
         if (user == null) {
-            user.setToken(UUID.randomUUID().toString().toUpperCase());
             user = userRepository.save(modelMapper.map(userDto, User.class));
+            user.setToken(UUID.randomUUID().toString().toUpperCase());
         }
         userDto.setId(user.getId());
         return userDto;
@@ -69,7 +66,7 @@ public class UserService {
 
     @Transactional
     public UserDto getUserByToken(String token) throws InvalidTokenException {
-        if (token.isEmpty()){
+        if (token.isEmpty()) {
             throw new InvalidTokenException();
         }
         User user = userRepository.findUserByToken(token);
@@ -88,16 +85,14 @@ public class UserService {
     }
 
 
-    public String encriptMD5(final String input) {
-        String hash = null;
-        if(null == input) return null;
+    private String encryptMD5(final String input) {
+        if (input == null) return null;
         try {
             MessageDigest digest = MessageDigest.getInstance("MD5");
             digest.update(input.getBytes(), 0, input.length());
-            hash = new BigInteger(1, digest.digest()).toString(16);
+            return new BigInteger(1, digest.digest()).toString(16);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return hash;
     }
 }
