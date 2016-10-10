@@ -1,6 +1,8 @@
 package com.mediahack.ui.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -9,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.mediahack.R;
 import com.mediahack.presentation.presenter.QuestPresenter;
@@ -42,8 +46,15 @@ public class QuestActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quest);
 
+        //avoiding keyboard appearance when activity starts
+        //avoiding move layout up when soft keyboard is shown
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN |
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        presenter = new QuestPresenter(this);
 
         questProgressResponseDto = (QuestProgressResponseDto) getIntent().getSerializableExtra(QUEST_PROGRESS);
         String questName = getIntent().getStringExtra(QUEST_NAME);
@@ -86,19 +97,40 @@ public class QuestActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {// handle arrow click here
-            finish();
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.action_info:
+                showInfoDialog("Team name: " + questProgressResponseDto.getTeamName() + "\n" +
+                        "Code: " + questProgressResponseDto.getCode());
+                break;
+            case R.id.action_share:
+                showVkShareDialog();
+                break;
         }
-        if (item.getItemId() == R.id.action_info) {
-            showInfoDialog("Team name: " + questProgressResponseDto.getTeamName() + "\n" +
-                    "Code: " + questProgressResponseDto.getCode());
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
     private void showInfoDialog(String text) {
         Util.getStandardDialog(this, text).show();
+    }
+
+    private void showVkShareDialog() {
+        AlertDialog.Builder builder = Util.getStandardDialog(this, "Do you want share this quest to Vk?");
+        builder.setPositiveButton("Share", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                presenter.shareVk();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
     }
 
     public void showNextTask() {
@@ -125,5 +157,20 @@ public class QuestActivity extends AppCompatActivity implements View.OnClickList
             }
         }
         return true;
+    }
+
+    @Override
+    public void onSuccessfulVkShare() {
+        Toast.makeText(this, "Successful Vk Share", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFailureVkShare() {
+        Toast.makeText(this, "Failure Vk Share", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showMessageDialog(String text) {
+        Util.getStandardDialog(this, text).show();
     }
 }

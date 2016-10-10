@@ -35,4 +35,7 @@ public interface MediaHackClient {
 
     @POST("/quest/{questId}/team/{teamName}")
     Call<QuestProgressResponseDto> createTeam(@Path("questId") Long questId, @Path("teamName") String teamName);
+
+    @POST("/profile/shareVK")
+    Call<Void> shareVk();
 }

@@ -7,7 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.mediahack.R;
 import com.mediahack.presentation.presenter.SignInPresenter;
@@ -42,8 +41,8 @@ public class SignInActivity extends AppCompatActivity implements SignInView, Vie
 
     private void vkLogin() {
 //        if (Util.isInternetAvailable()) {
-            VkSocialHelper vkSocialNetwork = new VkSocialHelper(this);
-            vkSocialNetwork.login();
+        VkSocialHelper vkSocialNetwork = new VkSocialHelper(this);
+        vkSocialNetwork.login();
 //        } else {
 //            Toast.makeText(this, R.string.internet_is_unavailable, Toast.LENGTH_SHORT).show();
 //        }

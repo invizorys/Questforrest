@@ -35,4 +35,10 @@
         <item name="colorControlHighlight">@android:color/white</item>
     </style>
 
+    <style name="CustomDialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@color/TransparentGrey</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
 </resources>

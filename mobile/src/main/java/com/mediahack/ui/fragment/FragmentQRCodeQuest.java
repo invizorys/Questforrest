@@ -1,7 +1,6 @@
 package com.mediahack.ui.fragment;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -83,25 +83,38 @@ public class FragmentQRCodeQuest extends Fragment implements View.OnClickListene
 
     @Override
     public void showResolveTaskResponse(final boolean resolved) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        answerDialogShow(resolved);
+    }
 
-        if (resolved) {
-            builder.setTitle("Success");
+    private void answerDialogShow(final boolean isRightAnswer) {
+        final Dialog dialog = new Dialog(getActivity(), R.style.CustomDialogTheme);
+        dialog.setContentView(R.layout.dialog_task_answer);
+        dialog.setCancelable(false);
+        dialog.findViewById(R.id.iTouchEveryWhere).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        if (isRightAnswer) {
+                            task.setSolved(true);
+                            ((QuestActivity) getActivity()).showNextTask();
+                        }
+                    }
+                });
+
+        ImageView imageView = (ImageView) dialog.findViewById(R.id.image_view);
+        TextView textView = (TextView) dialog.findViewById(R.id.text_view);
+        if (isRightAnswer) {
+            imageView.setImageResource(R.drawable.good_smile);
+            textView.setText("Success");
         } else {
-            builder.setTitle("Failure");
+            imageView.setImageResource(R.drawable.bad_smile);
+            textView.setText("Sorry, try again");
         }
-//        builder.setMessage(resultQr);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (resolved) {
-                    task.setSolved(true);
-                    ((QuestActivity) getActivity()).showNextTask();
-                }
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
+
+        dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        dialog.show();
     }
 
     @Override

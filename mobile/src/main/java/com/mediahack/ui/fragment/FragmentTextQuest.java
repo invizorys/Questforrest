@@ -1,13 +1,14 @@
 package com.mediahack.ui.fragment;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -78,25 +79,42 @@ public class FragmentTextQuest extends Fragment implements View.OnClickListener,
 
     @Override
     public void showResolveTaskResponse(boolean resolved) {
-        if (resolved) {
-            AlertDialog.Builder builder = Util.getStandardDialog(getActivity(),
-                    getString(R.string.correct_solution_message));
-            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    task.setSolved(true);
-                    ((QuestActivity) getActivity()).showNextTask();
-                }
-            });
-            builder.create().show();
-        } else {
-            Util.getStandardDialog(getActivity(),
-                    getString(R.string.incorrect_solution_message)).show();
-        }
+        answerDialogShow(getActivity(), resolved);
     }
 
     @Override
     public void showMessageDialog(String text) {
         Util.getStandardDialog(getActivity(), text).show();
+    }
+
+    private void answerDialogShow(Context context, final boolean isRightAnswer) {
+        final Dialog dialog = new Dialog(context, R.style.CustomDialogTheme);
+        dialog.setContentView(R.layout.dialog_task_answer);
+        dialog.setCancelable(false);
+        dialog.findViewById(R.id.iTouchEveryWhere).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        if (isRightAnswer) {
+                            task.setSolved(true);
+                            ((QuestActivity) getActivity()).showNextTask();
+                        }
+                    }
+                });
+
+        ImageView imageView = (ImageView) dialog.findViewById(R.id.image_view);
+        TextView textView = (TextView) dialog.findViewById(R.id.text_view);
+        if (isRightAnswer) {
+            imageView.setImageResource(R.drawable.good_smile);
+            textView.setText("Success");
+        } else {
+            imageView.setImageResource(R.drawable.bad_smile);
+            textView.setText("Sorry, try again");
+        }
+
+        dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        dialog.show();
     }
 }

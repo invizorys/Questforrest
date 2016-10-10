@@ -16,6 +16,7 @@ import retrofit2.Response;
 public class TextQuestPresenter {
     private TextQuestView view;
     private MediaHackClient client;
+    private final int INTERNAL_SERVER_ERROR = 500;
 
     public TextQuestPresenter(TextQuestView view) {
         this.view = view;
@@ -29,7 +30,13 @@ public class TextQuestPresenter {
 
             @Override
             public void onResponse(Call<AnswerResponseDto> call, Response<AnswerResponseDto> response) {
-                view.showResolveTaskResponse(response.body().isRightAnswer());
+                if (response.isSuccessful()) {
+                    view.showResolveTaskResponse(response.body().isRightAnswer());
+                } else {
+                    if (INTERNAL_SERVER_ERROR == response.code()) {
+                        view.showMessageDialog("internal server error");
+                    }
+                }
             }
 
             @Override

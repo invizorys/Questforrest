@@ -1,49 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
+    <!--Content-->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/container_app_bar">
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/container_app_bar"
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg" />
+
+        <Button
+            android:id="@+id/button_login_vk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-        </android.support.design.widget.AppBarLayout>
-
-        <!--Content-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/button_login_vk"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#51739a"
-                android:text="Sign in with VK"
-                android:textColor="#FFFFFF" />
-        </LinearLayout>
+            android:background="#51739a"
+            android:text="Sign in with VK"
+            android:textColor="#FFFFFF" />
 
     </RelativeLayout>
-
 
 </android.support.design.widget.CoordinatorLayout>
 

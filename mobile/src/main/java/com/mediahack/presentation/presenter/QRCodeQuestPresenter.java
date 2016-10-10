@@ -31,7 +31,7 @@ public class QRCodeQuestPresenter {
 
             @Override
             public void onResponse(Call<AnswerResponseDto> call, Response<AnswerResponseDto> response) {
-                view.showResolveTaskResponse(true);
+                view.showResolveTaskResponse(response.body().isRightAnswer());
             }
 
             @Override

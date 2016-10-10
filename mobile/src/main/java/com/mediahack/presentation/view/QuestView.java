@@ -5,4 +5,9 @@ package com.mediahack.presentation.view;
  */
 
 public interface QuestView {
+    void onSuccessfulVkShare();
+
+    void onFailureVkShare();
+
+    void showMessageDialog(String text);
 }

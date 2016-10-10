@@ -45,8 +45,12 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.ViewHolder> 
     public void onBindViewHolder(QuestAdapter.ViewHolder holder, int position) {
         final QuestShortInfoDto quest = quests.get(position);
         Picasso.with(context).load(quest.getPictureUrl()).into(holder.imageView);
+
+//        Typeface myTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/Audiowide-Regular.ttf");
         holder.title.setText(quest.getName());
+//        holder.title.setTypeface(myTypeface);
         holder.description.setText(quest.getDescription());
+//        holder.description.setTypeface(myTypeface);
 
         if (!quest.isEnrolled()) {
             holder.btnJoin.setVisibility(View.VISIBLE);
@@ -56,14 +60,14 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.ViewHolder> 
                     listener.onJoinClicked(quest.getId(), quest.getName());
                 }
             });
+        } else {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClicked(quest);
+                }
+            });
         }
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onItemClicked(quest);
-            }
-        });
     }
 
     @Override
@@ -92,6 +96,7 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.ViewHolder> 
 
     public interface AdapterListener {
         void onItemClicked(QuestShortInfoDto quest);
+
         void onJoinClicked(Long questId, String questName);
     }
 }

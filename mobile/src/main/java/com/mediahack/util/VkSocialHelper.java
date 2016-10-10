@@ -3,6 +3,7 @@ package com.mediahack.util;
 import android.app.Activity;
 
 import com.mediahack.model.User;
+import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKApiConst;
@@ -21,11 +22,11 @@ import org.json.JSONObject;
 public class VkSocialHelper {
     private Activity activity;
     private final String FIELD_PHOTO_NAME = "photo_200";
-    private static final String[] scopeVk = new String[]{};
+    private static final String[] scopeVk = new String[]{VKScope.WALL, VKScope.PHOTOS};
     private static final String ID_KEY = "id";
     private static final String FIRST_NAME_KEY = "first_name";
     private static final String LAST_NAME_KEY = "last_name";
-//    private static final String SEX_KEY = "sex";
+    //    private static final String SEX_KEY = "sex";
     private static final String BDAY_KEY = "bdate";
 
     public VkSocialHelper(Activity activity) {

@@ -2,9 +2,14 @@ package com.mediahack.util;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+
+import com.google.android.gms.ads.AdView;
+import com.mediahack.R;
 
 import java.io.IOException;
 
